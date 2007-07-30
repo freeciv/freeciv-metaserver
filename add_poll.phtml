@@ -1,0 +1,186 @@
+<!-- This is for the HTML validator -->
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- The real code begins here -->
+
+<HTML><HEAD><TITLE>Add a Freeciv poll to the website</TITLE></HEAD>
+<BODY BGCOLOR="#FFFAF0">
+<CENTER>
+
+<?php
+if ( $submit=="submit" && $title && $author) {
+    $fields="<input name=\"title\" type=\"hidden\" value=\"$title\">";
+    $fields.="<input name=\"author\" type=\"hidden\" value=\"$author\">";
+    echo "The poll will look something like this:<br><br><br>";
+    echo "<TABLE WIDTH=\"25%\" BORDER=\"0\" CELLPADDING=\"0\">";
+    echo "<TR> <TD BGCOLOR=\"#000000\"> <TABLE BORDER=\"0\" WIDTH=\"100%\">";
+    echo "<TR BGCOLOR=\"#00688B\"><TH> Poll </TH></TR>";
+    echo "<TR><TD BGCOLOR=\"#9FB6CD\"> <TABLE WIDTH=\"100%\">";
+    echo "<TR><TD> &nbsp </TD></TR><TR> <TD>";
+    echo "<CENTER><B> [$author]: $title </B></CENTER>";
+    echo "<P><FORM>";
+    if ( $a1 ) { 
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a1\"> $a1<br>";
+      $fields .= "<input name=\"a1\" type=\"hidden\" value=\"$a1\">";
+    }
+    if ( $a2 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a2\"> $a2<br>";
+      $fields .= "<input name=\"a2\" type=\"hidden\" value=\"$a2\">";
+    }
+    if ( $a3 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a3\"> $a3<br>";
+      $fields .= "<input name=\"a3\" type=\"hidden\" value=\"$a3\">";
+    }
+    if ( $a4 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a4\"> $a4<br>";
+      $fields .= "<input name=\"a4\" type=\"hidden\" value=\"$a4\">";
+    }
+    if ( $a5 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a5\"> $a5<br>";
+      $fields .= "<input name=\"a5\" type=\"hidden\" value=\"$a5\">";
+    }
+    if ( $a6 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a6\"> $a6<br>";
+      $fields .= "<input name=\"a6\" type=\"hidden\" value=\"$a6\">";
+    }
+    if ( $a7 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a7\"> $a7<br>";
+      $fields .= "<input name=\"a7\" type=\"hidden\" value=\"$a7\">";
+    }
+    if ( $a8 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a8\"> $a8<br>";
+      $fields .= "<input name=\"a8\" type=\"hidden\" value=\"$a8\">";
+    }
+    if ( $a9 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a9\"> $a9<br>";
+      $fields .= "<input name=\"a9\" type=\"hidden\" value=\"$a9\">";
+    }
+    if ( $a10 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a10\"> $a10<br>";
+      $fields .= "<input name=\"a10\" type=\"hidden\" value=\"$a10\">";
+    }
+    if ( $a11 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a11\"> $a11<br>";
+      $fields .= "<input name=\"a11\" type=\"hidden\" value=\"$a11\">";
+    }
+    if ( $a12 ) {
+      echo "<INPUT name=\"v\" type=\"radio\" value=\"$a12\"> $a12<br>";
+      $fields .= "<input name=\"a12\" type=\"hidden\" value=\"$a12\">";
+    }
+
+    echo"</CENTER></FORM></TD></TR></TABLE></TD></TR></TABLE></TD></TR></TABLE><BR><BR>";
+    echo "\nIf this is what you want click below:<br>";
+    echo "<form method=\"post\">\n$fields\n";
+    echo "<input type=\"submit\" name=\"submit\" value=\"Submit\"></form>";
+  } elseif ( $submit=="Submit" ) {
+    include_once("php_code/fcdb.php");   
+    fcdb_default_connect();
+
+    $queue_number = fcdb_query_single_value ("SELECT (MAX(queue_num) + 1) from poll_queue");
+    if ( !$queue_number) {
+      $queue_number = 0;
+    }
+
+    $stmt="insert into poll_queue (queue_num, title)" .
+	  " values ($queue_number, '[$author]: $title')";
+    $res=fcdb_exec($stmt);
+
+    $poll=fcdb_query_single_value ("select max(id) from poll_queue");
+    $message = "[$author]: $title\n";
+
+    if ( $a1 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a1')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a1\n";
+    }
+    if ( $a2 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a2')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a2\n";
+    }
+    if ( $a3 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a3')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a3\n";
+    }
+    if ( $a4 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a4')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a4\n";
+    }
+    if ( $a5 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a5')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a5\n";
+    }
+    if ( $a6 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a6')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a6\n";
+    }
+    if ( $a7 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a7')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a7\n";
+    }
+    if ( $a8 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a8')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a8\n";
+    }
+    if ( $a9 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a9')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a9\n";
+    }
+    if ( $a10 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a10')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a10\n";
+    }
+    if ( $a11 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a11')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a11\n";
+    }
+    if ( $a12 ) {
+      $stmt="insert into poll_queue_answer (poll_queue_id, answer) values ($poll, '$a12')";
+      $res=fcdb_exec($stmt);
+      $message .= "o $a12\n";
+    }
+
+    $message .= "\nApprove or delete this poll: http://thissite.org/private\n";
+
+    mail ($webmasteraddr, 'Poll added', $message);
+
+    print ("<h1>Thanks for your poll<h1>");
+  } else {
+?>
+<H1>Submit your own Freeciv poll</H1>
+<H3>Please rember that other polls are in the queue, 
+it can take some time before yours are displayed</H3>
+
+<form method="post">
+Author: <input name="author" type="text" size="20"><br>
+Poll: <input name="title" type="text" size="50"><br>
+Answer: <input name="a1" type="text" size="30"><br>
+Answer: <input name="a2" type="text" size="30"><br>
+Answer: <input name="a3" type="text" size="30"><br>
+Answer: <input name="a4" type="text" size="30"><br>
+Answer: <input name="a5" type="text" size="30"><br>
+Answer: <input name="a6" type="text" size="30"><br>
+Answer: <input name="a7" type="text" size="30"><br>
+Answer: <input name="a8" type="text" size="30"><br>
+Answer: <input name="a9" type="text" size="30"><br>
+Answer: <input name="a10" type="text" size="30"><br>
+Answer: <input name="a11" type="text" size="30"><br>
+Answer: <input name="a12" type="text" size="30"><br>
+<input name="submit" type="submit" value="submit">
+
+<?php
+
+}
+?>
+
+</CENTER>
+</BODY>
+</HTML>

@@ -1,0 +1,148 @@
+<?php
+
+  include_once("../php_code/fcdb.php");
+  fcdb_default_connect();
+
+  $errmsg = '';
+
+  $id = $_REQUEST['id'];
+  $cloneid = $_REQUEST['cloneid'];
+  $question = $_REQUEST['question'];
+  $reply = $_REQUEST['reply'];
+
+  if ($id) {
+    // verify that $id is actually a poll
+    $stmt="select * from poll_queue where id=$id";
+    $res=fcdb_exec($stmt);
+    if (!$res) {
+      $errmsg = "Poll $id does not exist!";
+      $id=0;
+    }
+  }
+
+  if (!$id) {
+    // no need to first perform the specified operation on poll $id
+  } elseif ( $_REQUEST['delete'] ) {
+    $stmt="delete from poll_queue_answer where poll_queue_id=$id";
+    fcdb_exec ($stmt);
+    $stmt="delete from poll_queue where id=$id";
+    fcdb_exec ($stmt);
+  } elseif ($_REQUEST['approve']){
+    $stmt="update poll_queue set approved=1 where id=$id";
+    fcdb_exec ($stmt);
+  } elseif ($_REQUEST['clone']){
+    $stmt='select max(queue_num) from poll_queue';
+    $queue_number = 1 + fcdb_query_single_value($stmt);
+    $stmt="select title from poll_queue where id=$id";
+    $title='"' . mysql_escape_string(fcdb_query_single_value($stmt)) . '"';
+    $stmt='insert into poll_queue (queue_num, title)' .
+	  " values ($queue_number, $title)";
+    $res=fcdb_exec($stmt);
+    if (!$res) {
+      $errmsg="Failed to resubmit old poll $id.";
+    }
+    $stmt="select id from poll_queue where queue_num=$queue_number";
+    $cloneid=fcdb_query_single_value($stmt);
+    $stmt="select answer from poll_queue_answer" .
+      " where poll_queue_id = $id";
+    $res=fcdb_exec($stmt);
+    if ($res) {
+      while ($row = mysql_fetch_assoc($res)) {
+        $stmt="insert into poll_queue_answer (poll_queue_id, answer)" .
+          " values ($cloneid, ".'"'.mysql_escape_string($row['answer']).'")';
+        fcdb_exec($stmt);
+      }
+      $id=$cloneid;
+
+      // unapprove the clone (just to be sure)
+      $stmt="update poll_queue set approved=0 where id=$id";
+      fcdb_exec($stmt);
+    }
+  } elseif ($_REQUEST['changequestion']){
+    $stmt="update poll_queue set title=\"$question\" where id=$id";
+    fcdb_exec ($stmt);
+  } elseif ($_REQUEST['changereply']){
+    $stmt="update poll_queue_answer set answer=\"$reply\" where id=$id";
+    fcdb_exec ($stmt);
+  } elseif ($_REQUEST['deletereply']){
+    $stmt="delete from poll_queue_answer where id=$id";
+    fcdb_exec ($stmt);
+  } elseif ($_REQUEST['addreply']){
+    $stmt="insert into poll_queue_answer (answer,poll_queue_id) values (\"$reply\",$id)";
+    fcdb_exec ($stmt);
+  } else {
+    $errmsg = 'No operation specified!';
+  }
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- for the HTML validator; the real code begins here -->
+<HTML><HEAD><TITLE>Change the Freeciv Poll Queue</TITLE></HEAD>
+<BODY BGCOLOR="#FFFAF0">
+<CENTER>
+
+<?php
+      if ($errmsg != '') {
+	echo "<em>Warning: $errmsg</em>\n";
+      }
+
+      $stmt="select * from poll_queue where new=1 and approved=0";
+      $res=fcdb_exec($stmt);
+
+      if (fcdb_num_rows ($res) == 0) {
+	echo '<h2>No unapproved polls exist at the moment, using old polls:</h2>', "\n";
+	$stmt="select * from poll_queue where new=0";
+	$res=fcdb_exec($stmt);
+      }
+
+    echo "<table>\n";
+
+    for ($i = 0; $i < fcdb_num_rows ($res); $i ++) {
+      $row = fcdb_fetch_array ($res, $i);
+
+      echo '<tr> <form method="get">', "\n";
+      echo '<input name="id" type="hidden" value=', $row[id], '>', "\n";
+      echo "<td>\n";
+      if (!$row['new']) {
+	echo $row['title'],"\n";
+	echo "</td>\n<td>\n";
+	echo '<input name="clone" type="submit" value="Resubmit a copy">', "\n";
+      } else {
+	echo '<input name="question" type="text" value="',
+	  $row['title'], '" size="50">', "\n";
+	echo "</td>\n<td>\n";
+	echo '<input name="changequestion" type="submit" value="Change question">', "\n";
+	echo '<input name="delete" type="submit" value="Delete">', "\n";
+	echo '<input name="approve" type="submit" value="Approve">', "\n";
+      }
+      echo "</td> </form> </tr>\n";
+
+      if ($row['new']) {
+	$ans_stmt="select * from poll_queue_answer where poll_queue_id = " . $row[id];
+	$ans_res=fcdb_exec($ans_stmt);
+	for ($a = 0; $a < fcdb_num_rows ($ans_res); $a ++) {
+	  $ans_row = fcdb_fetch_array ($ans_res, $a);
+	  echo '<tr> <form method="get">', "\n";
+	  echo '<td> <input name="reply" type="text" value="',
+		$ans_row[answer], '" size="50"> </td>', "\n";
+	  echo '<td> ';
+	  echo '<input name="id" type="hidden" value=', $ans_row[id], '>', "\n";
+	  echo '<input name="changereply" type="submit" value="Change reply">', "\n";
+	  echo '<input name="deletereply" type="submit" value="Delete reply">', "\n";
+	  echo "</td> </form> </tr>\n";
+	}
+	echo '<tr> <form method="get">', "\n";
+	echo '<td> <input name="reply" type="text" value="" size="50"> </td>', "\n";
+	echo '<td> <input name="id" type="hidden" value="', $row[id], '">', "\n";
+	echo '<input name="addreply" type="submit" value="Add reply">', "\n";
+	echo "</td> </form>\n";
+	echo "</tr>\n";
+      }
+    }
+
+    echo "</table>\n";
+?>
+
+</CENTER>
+</BODY>
+</HTML>

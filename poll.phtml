@@ -1,0 +1,46 @@
+<!-- This is for the HTML validator -->
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- The real code begins here -->
+
+<?php
+  // include the php-code finder
+  ini_set("include_path",
+	ini_get("include_path") . ":" . $_SERVER["DOCUMENT_ROOT"]
+  );
+  include_once("php_code/php_code_find.php");
+  // includes for support routines
+  include_once(php_code_find("shared_variables.php"));
+  include_once(php_code_find("fcdb.php"));
+  include_once(php_code_find("polls.php"));
+?>
+
+<HTML>
+<HEAD>
+<TITLE>Freeciv Poll Results</TITLE>
+<META HTTP-EQUIV=Content-Language CONTENT=en>
+</HEAD>
+
+<BODY BGCOLOR="#FFFAF0">
+
+<CENTER>
+<IMG SRC="pics/headers/results.gif" ALT="Results">
+</CENTER>
+
+<BR>
+<CENTER>
+<?php polls_emit_results(); ?>
+</CENTER>
+<BR>
+
+<BR>
+<HR>Return to <a href="/">the main page</A>
+<BR><A HREF="oldpolls.phtml">See the results of old polls</A>
+<HR>In case of technical problems, please contact
+<?php echo $webmaster ?>.
+
+<BR><BR>
+<P ALIGN="center"><IMG SRC="pics/hr.gif" ALT="--------"></P>
+<BR><BR>
+
+</BODY>
+</HTML>
