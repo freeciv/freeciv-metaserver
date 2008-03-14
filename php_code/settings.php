@@ -16,6 +16,22 @@ if ($version_file == NULL) {
   $versions_file = $metaserver_root . '/versions';
 }
 
+if ($fddb_default_db == NULL) {
+  $fcdb_default_db = "default";
+}
+
+if ($fcdb_metaserver_db == NULL) {
+  $fcdb_metaserver_db = "metaserver";
+}
+
+if ($fcdb_username == NULL) {
+  $fcdb_username = "dude";
+}
+
+if ($fcdb_pw == NULL) {
+  $fcdb_pw = '';
+}
+
 // Check configuration
 if (! file_exists($metaserver_root . "/php_code/php_code_find.php")) {
   if ($localsettings == NULL) {

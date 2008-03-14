@@ -1,10 +1,7 @@
 <?php
 
+// MySQL is the only one really working at the moment...
 $fcdb_sel = "MySQL";
-
-$fcdb_default_db = "default";
-$fcdb_metaserver_db = "metaserver";
-$fcdb_username = "dude";
 
 function fcdb_error_handler($errno, $errstr) {
 
@@ -13,20 +10,20 @@ function fcdb_error_handler($errno, $errstr) {
 // please use these instead of fcdb_connect wherever possible
 
 function fcdb_default_connect() {
-  global $fcdb_default_db, $fcdb_username;
+  global $fcdb_default_db, $fcdb_username, $fcdb_pw;
 
-  return fcdb_connect($fcdb_default_db, $fcdb_username);
+  return fcdb_connect($fcdb_default_db, $fcdb_username, $fcdb_pw);
 }
 
 function fcdb_metaserver_connect() {
-  global $fcdb_metaserver_db, $fcdb_username;
+  global $fcdb_metaserver_db, $fcdb_username, $fcdb_pw;
 
-  return fcdb_connect($fcdb_metaserver_db, $fcdb_username);
+  return fcdb_connect($fcdb_metaserver_db, $fcdb_username, $fcdb_pw);
 }
 
 $dbhost = '';
 
-function fcdb_connect($db, $un) {
+function fcdb_connect($db, $un, $pw) {
   global $fcdb_sel, $fcdb_conn;
   global $dbhost;
 
@@ -42,7 +39,7 @@ function fcdb_connect($db, $un) {
       $ok = false;
       break;
     case "MySQL":
-      $fcdb_conn = mysql_pconnect($dbhost, $un, '');
+      $fcdb_conn = mysql_pconnect($dbhost, $un, $pw);
       if (!$fcdb_conn) {
 	build_fcdb_error("I cannot make a connection to the database server.");
 	$ok = false;
@@ -176,6 +173,8 @@ function build_fcdb_error($what_error) {
     $wmpart = "";
   }
 
+  // FIXME: There should be no mysql_error() call if we are using
+  //        some other db engine.
   $error_msg = "<table border=\"1\" style=\"font-size:xx-small\">\n" .
                "<tr><th>$what_error</th><tr>\n" .
                "<tr><td>" . mysql_error() . "</td></tr>" .
