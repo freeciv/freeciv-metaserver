@@ -1,4 +1,8 @@
 <?php
+
+$error_msg = NULL;
+global $error_msg;
+
   // include the php-code finder
   ini_set("include_path",
 	ini_get("include_path") . ":" . $_SERVER["DOCUMENT_ROOT"]
@@ -395,6 +399,10 @@ div {
 <body>
 <div>
 <?php
+
+  if ($error_msg != NULL) {
+    echo $error_msg;
+  }
 
   if (isset($server_port)) {
     print "<h1>Freeciv server $server_port</h1><br />\n";

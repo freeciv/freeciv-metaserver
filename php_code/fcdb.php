@@ -37,21 +37,21 @@ function fcdb_connect($db, $un) {
     case "PostgreSQL":
       $fcdb_conn = pg_Connect("dbname=$db port=5432 user=$un");
       if (!$fcdb_conn) {
-	fcdb_error("I cannot make a connection to the database server.");
+	build_fcdb_error("I cannot make a connection to the database server.");
       }
       $ok = false;
       break;
     case "MySQL":
       $fcdb_conn = mysql_pconnect($dbhost, $un, '');
       if (!$fcdb_conn) {
-	fcdb_error("I cannot make a connection to the database server.");
+	build_fcdb_error("I cannot make a connection to the database server.");
 	$ok = false;
       }
       else
       {
         $ok = mysql_select_db($db, $fcdb_conn);
         if (!$ok) {
-	  fcdb_error("I cannot open the database.");
+	  build_fcdb_error("I cannot open the database.");
         }
       }
       break;
@@ -68,13 +68,13 @@ function fcdb_exec($stmt) {
     case "PostgreSQL":
       $res = pg_Exec($fcdb_conn, $stmt);
       if (!$res) {
-	fcdb_error("I cannot run a statement: '$stmt'.");
+	build_fcdb_error("I cannot run a statement: '$stmt'.");
       }
       break;
     case "MySQL":
       $res = mysql_query($stmt, $fcdb_conn);
       if (!$res) {
-	fcdb_error("I cannot run a statement: '$stmt'.");
+	build_fcdb_error("I cannot run a statement: '$stmt'.");
       }
       break;
   }
@@ -89,14 +89,14 @@ function fcdb_query_single_value($stmt) {
     case "PostgreSQL":
       $res = pg_Exec($fcdb_conn, $stmt);
       if (!$res) {
-	fcdb_error("I cannot run a query: '$stmt'.");
+	build_fcdb_error("I cannot run a query: '$stmt'.");
       }
       $val = pg_Result($res, 0, 0);
       break;
     case "MySQL":
       $res = mysql_query($stmt, $fcdb_conn);
       if (!$res) {
-	fcdb_error("I cannot run a query: '$stmt'.");
+	build_fcdb_error("I cannot run a query: '$stmt'.");
       }
       $val = mysql_result($res, 0, 0);
       break;
@@ -130,7 +130,7 @@ function fcdb_fetch_array($res, $inx) {
     case "MySQL":
       $ok = mysql_data_seek($res, $inx);
       if (!$ok) {
-	fcdb_error("I couldn't seek to given row.");
+	build_fcdb_error("I couldn't seek to given row.");
       }
       $arr = mysql_fetch_array($res);
       break;
@@ -166,19 +166,24 @@ function fcdb_mktime($time_str) {
   return ($time_sec);
 }
 
-function fcdb_error($what_error) {
+// Store error message. Don't send it yet as HTTP headers must be sent first.
+function build_fcdb_error($what_error) {
   global $webmaster;
-  echo "<table border=\"1\" style=\"font-size:xx-small\">\n";
-  echo "<tr><th>$what_error</th><tr>\n";
-  echo "<tr><td>" . mysql_error() . "</td></tr>";
-  echo "<tr><td>";
-  echo "Please contact the maintainer";
+
   if ($webmaster != "") {
-    echo ", $webmaster";
+    $wmpart = ", $webmaster";
+  } else {
+    $wmpart = "";
   }
-  echo ".</td></tr>\n";
-  echo "</table></font>\n";
-  //exit;  // no, don't!
+
+  $error_msg = "<table border=\"1\" style=\"font-size:xx-small\">\n" .
+               "<tr><th>$what_error</th><tr>\n" .
+               "<tr><td>" . mysql_error() . "</td></tr>" .
+               "<tr><td>" .
+               "Please contact the maintainer" . $wmpart .
+               ".</td></tr>\n</table></font>\n";
+
+  $GLOBALS['error_msg'] = $error_msg;
 }
 
 ?>
