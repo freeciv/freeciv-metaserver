@@ -18,7 +18,7 @@ function versions_next_likely() {
 
 function versions_file_nth_line($n) {
   $retlin = "?.?.?";
-  $fp = fopen($_SERVER[DOCUMENT_ROOT] . '/versions', 'r');
+  $fp = fopen($versions_file, 'r');
   if ($fp) {
     $ln = 0;
     while ($line = fgets($fp, 200)) {

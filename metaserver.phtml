@@ -3,22 +3,29 @@
 $error_msg = NULL;
 global $error_msg;
 
-  // include the php-code finder
-  ini_set("include_path",
-	ini_get("include_path") . ":" . $_SERVER["DOCUMENT_ROOT"]
-  );
+/* do we want debug output to stderr?
+ * This is very heavy so never leave it on in production
+ */
+$debug=0;
+
+// include the php-code finder
+ini_set("include_path", ini_get("include_path") . ":" . $_SERVER["DOCUMENT_ROOT"]);
+
+include_once("php_code/settings.php");
+
+if ($error_msg != NULL) {
+  $config_problem = true;
+}
+
+if (! $config_problem) {
   include_once("php_code/php_code_find.php");
   // includes for support routines
   include_once(php_code_find("shared_variables.php"));
   include_once(php_code_find("fcdb.php"));
   include_once(php_code_find("versions_file.php"));
 
-/* do we want debug output to stderr? 
- * This is very heavy so never leave it on in production 
- */
-$debug=0;
-
-fcdb_metaserver_connect();
+  fcdb_metaserver_connect();
+}
 
 $fullself="http://".$_SERVER["SERVER_NAME"].$_SERVER["PHP_SELF"];
 
@@ -402,132 +409,131 @@ div {
 
   if ($error_msg != NULL) {
     echo $error_msg;
-  }
-
-  if (isset($server_port)) {
-    print "<h1>Freeciv server $server_port</h1><br />\n";
-    list($host, $port)=preg_split("/:/",$server_port);
-    $stmt = "select * from servers where host=\"$host\" and port=\"$port\"";
-    $res = fcdb_exec($stmt);
-    $nr = fcdb_num_rows($res);
-    if ( $nr != 1 ) {
-      print "Cannot find the specified server";
-    } else {
-      $row = fcdb_fetch_array($res, 0);
-      print "<table><tr><th>Version</th><th>Patches</th><th>Capabilities</th>";
-      print "<th>State</th>";
-      print "<th>Server ID</th></tr>\n";
-      print "<tr><td>";
-      print $row["version"];
-      print "</td><td>";
-      print stripslashes($row["patches"]);
-      print "</td><td>";
-      print stripslashes($row["capability"]);
-      print "</td><td>";
-      print $row["state"];
-      print "</td><td>";
-      print stripslashes($row["serverid"]);
-      print "</td></tr>\n</table></p>\n";
-      print "<p>";
-      print "<table><tr><th>Message</th></tr>\n";
-      print "<tr><td>";
-      print stripslashes($row["message"]);
-      print "</td></tr>";
-      print "</table></p>\n";
-      $stmt="select * from players where hostport=\"$server_port\" order by name";
-      $res = fcdb_exec($stmt);
-      $nr = fcdb_num_rows($res);
-      if ( $nr > 0 ) {
-        print "<p><div><table style=\"width: 60%;\">\n";
-        print "<tr><th class=\"left\">Leader</th><th>Nation</th>";
-        print "<th>User</th><th>Type</th><th>Host</th></tr>\n";
-        for ( $inx = 0; $inx < $nr; $inx++ ) {
-          $row = fcdb_fetch_array($res, $inx);
-          print "<tr><td class=\"left\">";
-          print stripslashes($row["name"]);
-          print "</td><td>";
-          print stripslashes($row["nation"]);
-          print "</td><td>";
-          print stripslashes($row["user"]);
-          print "</td><td>";
-          print stripslashes($row["type"]);
-          print "</td><td>";
-          print stripslashes($row["host"]);
-          print "</td></tr>\n";
-        }
-        print "</table></div><p>\n";
-      } else {
-        print "<p>No players</p>\n";
-      }
-      $stmt="select * from variables where hostport=\"$server_port\"";
-      $res = fcdb_exec($stmt);
-      $nr = fcdb_num_rows($res);
-      if ( $nr > 0 ) {
-        print "<div><table>\n";
-        print "<tr><th class=\"left\">Option</th><th>Value</th></tr>\n";
-        for ( $inx = 0; $inx < $nr; $inx++ ) {
-          $row = fcdb_fetch_array($res, $inx);
-          print "<tr><td>";
-          print $row["name"];
-          print "</td><td>";
-          print $row["value"];
-          print "</td></tr>\n";
-        }
-        print "</table></div>";
-        print "<P><a href=\"".$_SERVER["PHP_SELF"]."\">Return to main Page</a>";
-      }
-
-    }
   } else {
-    print "<h1>Freeciv servers around the world</h1><br />\n";
-    $stmt="select host,port,version,patches,state,topic,unix_timestamp()-unix_timestamp(stamp),available from servers order by host,port asc";
-    $res = fcdb_exec($stmt);
-    $nr = fcdb_num_rows($res);
-    if ( $nr > 0 ) {
-      print "<table>\n";
-      print "<tr><th class=\"left\">Host</th><th>Port</th>";
-      print "<th>Version</th><th>Patches</th><th>State</th><th>Players</th>";
-      print "<th>Topic</th><th>Last Update</th>";
-      print "<th>Players Available</th></tr>\n";
-      for ( $inx = 0; $inx < $nr; $inx++ ) {
-        $row = fcdb_fetch_array($res, $inx);
-        print "<tr><td class=\"left\">";
-        print "<a href=\"".$_SERVER["PHP_SELF"]."?server_port=";
-        print $row["host"];
-        print ":";
-        print $row["port"];
-        print "\">";
-        print $row["host"];
-        print "</a>";
-        print "</td><td>";
-        print $row["port"];
-        print "</td><td>";
+    if (isset($server_port)) {
+      print "<h1>Freeciv server $server_port</h1><br />\n";
+      list($host, $port)=preg_split("/:/",$server_port);
+      $stmt = "select * from servers where host=\"$host\" and port=\"$port\"";
+      $res = fcdb_exec($stmt);
+      $nr = fcdb_num_rows($res);
+      if ( $nr != 1 ) {
+        print "Cannot find the specified server";
+      } else {
+        $row = fcdb_fetch_array($res, 0);
+        print "<table><tr><th>Version</th><th>Patches</th><th>Capabilities</th>";
+        print "<th>State</th>";
+        print "<th>Server ID</th></tr>\n";
+        print "<tr><td>";
         print $row["version"];
         print "</td><td>";
         print stripslashes($row["patches"]);
         print "</td><td>";
+        print stripslashes($row["capability"]);
+        print "</td><td>";
         print $row["state"];
         print "</td><td>";
-        $stmt="select * from players where hostport=\"".$row['host'].":".$row['port']."\"";
-        $res1 = fcdb_exec($stmt);
-        print fcdb_num_rows($res1);
-        print "</td><td style=\"width: 30%\">";
-        print stripslashes($row["topic"]);
-        print "</td><td>";
-        $time_sec = $row["unix_timestamp()-unix_timestamp(stamp)"];
-        $last_update = sprintf("%ss", $time_sec);
-        if ($time_sec >= 60) {
-          $last_update = sprintf("%sm", floor($time_sec/60));
+        print stripslashes($row["serverid"]);
+        print "</td></tr>\n</table></p>\n";
+        print "<p>";
+        print "<table><tr><th>Message</th></tr>\n";
+        print "<tr><td>";
+        print stripslashes($row["message"]);
+        print "</td></tr>";
+        print "</table></p>\n";
+        $stmt="select * from players where hostport=\"$server_port\" order by name";
+        $res = fcdb_exec($stmt);
+        $nr = fcdb_num_rows($res);
+        if ( $nr > 0 ) {
+          print "<p><div><table style=\"width: 60%;\">\n";
+          print "<tr><th class=\"left\">Leader</th><th>Nation</th>";
+          print "<th>User</th><th>Type</th><th>Host</th></tr>\n";
+          for ( $inx = 0; $inx < $nr; $inx++ ) {
+            $row = fcdb_fetch_array($res, $inx);
+            print "<tr><td class=\"left\">";
+            print stripslashes($row["name"]);
+            print "</td><td>";
+            print stripslashes($row["nation"]);
+            print "</td><td>";
+            print stripslashes($row["user"]);
+            print "</td><td>";
+            print stripslashes($row["type"]);
+            print "</td><td>";
+            print stripslashes($row["host"]);
+            print "</td></tr>\n";
+          }
+          print "</table></div><p>\n";
+        } else {
+          print "<p>No players</p>\n";
         }
-        print $last_update;
-        print "</td><td>";
-        print $row["available"];
-	print "</td></tr>\n";
+        $stmt="select * from variables where hostport=\"$server_port\"";
+        $res = fcdb_exec($stmt);
+        $nr = fcdb_num_rows($res);
+        if ( $nr > 0 ) {
+          print "<div><table>\n";
+          print "<tr><th class=\"left\">Option</th><th>Value</th></tr>\n";
+          for ( $inx = 0; $inx < $nr; $inx++ ) {
+            $row = fcdb_fetch_array($res, $inx);
+            print "<tr><td>";
+            print $row["name"];
+            print "</td><td>";
+            print $row["value"];
+            print "</td></tr>\n";
+          }
+          print "</table></div>";
+          print "<P><a href=\"".$_SERVER["PHP_SELF"]."\">Return to main Page</a>";
+        }
+
       }
-      print "</table>";
     } else {
-      print "<h2>No servers currently listed</h2>";
-    }
+      print "<h1>Freeciv servers around the world</h1><br />\n";
+      $stmt="select host,port,version,patches,state,topic,unix_timestamp()-unix_timestamp(stamp),available from servers order by host,port asc";
+      $res = fcdb_exec($stmt);
+      $nr = fcdb_num_rows($res);
+      if ( $nr > 0 ) {
+        print "<table>\n";
+        print "<tr><th class=\"left\">Host</th><th>Port</th>";
+        print "<th>Version</th><th>Patches</th><th>State</th><th>Players</th>";
+        print "<th>Topic</th><th>Last Update</th>";
+        print "<th>Players Available</th></tr>\n";
+        for ( $inx = 0; $inx < $nr; $inx++ ) {
+          $row = fcdb_fetch_array($res, $inx);
+          print "<tr><td class=\"left\">";
+          print "<a href=\"".$_SERVER["PHP_SELF"]."?server_port=";
+          print $row["host"];
+          print ":";
+          print $row["port"];
+          print "\">";
+          print $row["host"];
+          print "</a>";
+          print "</td><td>";
+          print $row["port"];
+          print "</td><td>";
+          print $row["version"];
+          print "</td><td>";
+          print stripslashes($row["patches"]);
+          print "</td><td>";
+          print $row["state"];
+          print "</td><td>";
+          $stmt="select * from players where hostport=\"".$row['host'].":".$row['port']."\"";
+          $res1 = fcdb_exec($stmt);
+          print fcdb_num_rows($res1);
+          print "</td><td style=\"width: 30%\">";
+          print stripslashes($row["topic"]);
+          print "</td><td>";
+          $time_sec = $row["unix_timestamp()-unix_timestamp(stamp)"];
+          $last_update = sprintf("%ss", $time_sec);
+          if ($time_sec >= 60) {
+            $last_update = sprintf("%sm", floor($time_sec/60));
+          }
+          print $last_update;
+          print "</td><td>";
+          print $row["available"];
+	  print "</td></tr>\n";
+        }
+        print "</table>";
+      } else {
+        print "<h2>No servers currently listed</h2>";
+      }
 ?>
 <br />
 <br />
@@ -540,11 +546,16 @@ Please report any bugs to <?php echo $bugs; ?>.
 <br /><br />
 Start your civserver with the -m option if you want it listed here.</em></p>
 <?
-  }
+    }
 ?>
 <br /><br />
 <p class="center"><img src="pics/hr.gif" alt="--------" /></p>
 <br /><br />
+
+<?
+  }
+?>
+
 </div>
 </body>
 </html>
