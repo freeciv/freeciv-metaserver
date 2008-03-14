@@ -1,5 +1,8 @@
 <?
 
+$error_msg = NULL;
+global $error_msg;
+
 if (file_exists("php_code/local.php")) {
   $localsettings = fopen('php_code/local.php', 'r');
 }
@@ -16,7 +19,7 @@ if ($version_file == NULL) {
   $versions_file = $metaserver_root . '/versions';
 }
 
-if ($fddb_default_db == NULL) {
+if ($fcdb_default_db == NULL) {
   $fcdb_default_db = "default";
 }
 

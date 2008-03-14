@@ -7,6 +7,7 @@
   ini_set("include_path",
 	ini_get("include_path") . ":" . $_SERVER["DOCUMENT_ROOT"]
   );
+  include_once("php_code/settings.php");
   include_once("php_code/php_code_find.php");
   // includes for support routines
   include_once(php_code_find("shared_variables.php"));
