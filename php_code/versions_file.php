@@ -30,8 +30,10 @@ function versions_file_nth_line($n) {
 	}
       }
     }
+    fclose($fp);
+  } else {
+    $retlin = "not known";
   }
-  fclose($fp);
   return ($retlin);
 }
 
