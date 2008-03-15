@@ -13,6 +13,7 @@
   include_once(php_code_find("shared_variables.php"));
   include_once(php_code_find("fcdb.php"));
   include_once(php_code_find("polls.php"));
+  include_once(php_code_find("img.php"));
 ?>
 
 <HTML>
@@ -24,7 +25,11 @@
 <BODY BGCOLOR="#FFFAF0">
 
 <CENTER>
-<IMG SRC="pics/headers/oldpolls.gif" ALT="Old Polls">
+
+<?
+img_html("headers/oldpolls.gif", "Old Polls", NULL);
+?>
+
 </CENTER>
 
 <BR>
@@ -39,7 +44,11 @@
 <?php echo $webmaster ?>.
 
 <BR><BR>
-<P ALIGN="center"><IMG SRC="pics/hr.gif" ALT="--------"></P>
+<P ALIGN="center">
+<?
+img_html("hr.gif", "--------", NULL);
+?>
+</P>
 <BR><BR>
 
 </BODY>

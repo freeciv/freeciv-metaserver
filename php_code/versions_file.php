@@ -17,6 +17,8 @@ function versions_next_likely() {
 }
 
 function versions_file_nth_line($n) {
+  global $versions_file;
+
   $retlin = "?.?.?";
   $fp = fopen($versions_file, 'r');
   if ($fp) {

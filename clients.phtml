@@ -12,6 +12,7 @@
   // includes for support routines
   include_once(php_code_find("shared_variables.php"));
   include_once(php_code_find("fcdb.php"));
+  include_once(php_code_find("img.php"));
 ?>
 
 <HTML>
@@ -22,14 +23,11 @@
 
 <BODY BGCOLOR="#FFFAF0">
 
-<CENTER>
-<IMG SRC="pics/headers/clients.gif" ALT="Client Statistics">
-</CENTER>
+<?
+echo "<CENTER>";
+img_html("headers/clients.gif", "Client Statistics", NULL);
+echo "</CENTER><BR><CENTER>";
 
-
-<BR>
-<CENTER>
-<? 
 $start = "start";
 if ( isset($_REQUEST[$start]) ) { 
   $where[]="date >= \"$_REQUEST[$start]\"";
@@ -79,9 +77,10 @@ foreach ($list as $type) {
     }
     echo "</TD><TD ALIGN=\"RIGHT\">";
     echo $count;
-    echo "</TD><TD ALIGN=LEFT><IMG SRC=\"/pics/line.png\" height=\"16\" width=\"";
-    echo $l*6+1;
-    echo "\"> <TD ALIGN=RIGHT>$l%</TD></TR>\n";
+    echo "</TD><TD ALIGN=LEFT>";
+    $img_tag_extra= "height=\"16\" width=\"" . strval($l*6+1) . "\"";
+    img_html("line.png", NULL, "$img_tag_extra");
+    echo "<TD ALIGN=RIGHT>$l%</TD></TR>\n";
   }
   echo "</TABLE><BR>";
 }
@@ -95,7 +94,10 @@ foreach ($list as $type) {
 <?php echo $webmaster ?>.
 
 <BR><BR>
-<P ALIGN="center"><IMG SRC="pics/hr.gif" ALT="--------"></P>
+<P ALIGN="center">
+<?
+img_html("hr.gif", "--------", NULL);
+?>
 <BR><BR>
 
 </BODY>

@@ -11,12 +11,15 @@ if ($localsettings != NULL) {
   include_once("php_code/local.php");
 }
 
-if ($metaserver_root == NULL) {
-  $metaserver_root = $_SERVER[DOCUMENT_ROOT];
+if ($metaserver_url_path == NULL) {
+  // Server root
+  $metaserver_url_path = "";
 }
 
-if ($version_file == NULL) {
-  $versions_file = $metaserver_root . '/versions';
+$metaserver_root = $_SERVER[DOCUMENT_ROOT] . $metaserver_url_path;
+
+if ($versions_file == NULL) {
+  $versions_file = $metaserver_root . "versions";
 }
 
 if ($fcdb_default_db == NULL) {
@@ -33,6 +36,12 @@ if ($fcdb_username == NULL) {
 
 if ($fcdb_pw == NULL) {
   $fcdb_pw = '';
+}
+
+if ($pic_paths == NULL) {
+  // Search pics under metaserver directory and under server root.
+  $pic_paths = array($metaserver_root . "pics/" => $metaserver_url_path . "pics/",
+                     $_SERVER[DOCUMENT_ROOT] . "pics/" => "pics/");
 }
 
 // Check configuration

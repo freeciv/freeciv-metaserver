@@ -20,6 +20,7 @@ if (! $config_problem) {
   include_once(php_code_find("shared_variables.php"));
   include_once(php_code_find("fcdb.php"));
   include_once(php_code_find("versions_file.php"));
+  include_once(php_code_find("img.php"));
 
   fcdb_metaserver_connect();
 }
@@ -535,7 +536,13 @@ div {
 <br />
 <br />
 <p class="center"><em>
-<a href="./metaserver.phtml?rss=1"><img src="../pics/rss1.gif" alt="RSS1"></a>
+
+<?
+echo "<a href=\"./metaserver.phtml?rss=1\">";
+img_html("rss1.gif", "RSS1", NULL);
+echo "</a>";
+?>
+
 <br />
 Latest stable release is <?php echo versions_current(); ?>.
 <br />
@@ -544,12 +551,9 @@ Please report any bugs to <?php echo $bugs; ?>.
 Start your civserver with the -m option if you want it listed here.</em></p>
 <?
     }
-?>
-<br /><br />
-<p class="center"><img src="pics/hr.gif" alt="--------" /></p>
-<br /><br />
-
-<?
+  echo "<br /><br /><p class=\"center\">";
+  img_html("hr.gif", "--------", NULL);
+  echo "</p><br /><br />";
   }
 ?>
 
