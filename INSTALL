@@ -4,6 +4,11 @@ Config
 Local configuration is in file php_code/local.php.
 Values to configure:
 
+$metaURL
+  Address that Freeciv servers should use to contact this metaserver. This is only
+  used to instruct users. Default metaserver should probably set it NULL, others may
+  want to set it to "http://$_SERVER[SERVER_NAME]$_SERVER[REQUEST_URI]"
+
 $metaserver_url_path
   Metaserver directory relative to server root. Last "/" is required, except if this is
   pointing to webserver root.

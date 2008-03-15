@@ -553,7 +553,14 @@ Latest stable release is <?php echo versions_current(); ?>.
         echo "Please report any bugs to " . $bugs_html . ".";
       }
       echo "<br /><br />";
-      echo "Start your civserver with the -m option if you want it listed here.</em></p>";
+      echo "Start your civserver with the -m option if you want it listed ";
+      if ($metaURL != NULL) {
+        echo "on the metaserver.<BR>\n";
+        echo "To contact this particular metaserver, use also \"-M $metaURL\"";
+      } else {
+        echo "here.";
+      }
+      echo "</em></p>";
     }
     echo "<br /><br /><p class=\"center\">";
     img_html("hr.gif", "--------", NULL);
