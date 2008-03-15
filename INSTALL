@@ -1,0 +1,39 @@
+Config
+======
+
+Local configuration is in file php_code/local.php.
+Values to configure:
+
+$metaserver_url_path
+  Metaserver directory relative to server root. Last "/" is required, except if this is
+  pointing to webserver root.
+  Default value is "" (webserver root)
+
+$versions_file
+  Filesystem name for file to read Freeciv version information from.
+  Default value is "$_SERVER[DOCUMENT_ROOT]$metaserver_url_path/versions"
+
+$fcdb_default_db
+  Name of the default database
+  Default value is "default"
+
+$fcdb_metaserver_db
+  Name of the metaserver database
+  Default value is "metaserver"
+
+$fcdb_username
+  MySQL username
+  Default value is "dude"
+
+$fcdb_pw
+  MySQL password
+  Default value is '' (no password)
+
+$pic_paths
+  Array of image search directories. Maps between filesystem layout and
+  webserver layout.
+
+  Default value searches from pics subdirectories under metaserver directory and webserver 
+  root directory:
+    $_SERVER[DOCUMENT_ROOT] . $metaserver_url_path . "pics/" => $metaserver_url_path . "pics/",
+    $_SERVER[DOCUMENT_ROOT]/pics/ => "pics/"
