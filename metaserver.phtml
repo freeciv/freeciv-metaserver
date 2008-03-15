@@ -419,6 +419,7 @@ div {
         print "Cannot find the specified server";
       } else {
         $row = fcdb_fetch_array($res, 0);
+        $msg = stripslashes($row["message"]);
         print "<table><tr><th>Version</th><th>Patches</th><th>Capabilities</th>";
         print "<th>State</th>";
         print "<th>Server ID</th></tr>\n";
@@ -433,12 +434,12 @@ div {
         print "</td><td>";
         print stripslashes($row["serverid"]);
         print "</td></tr>\n</table></p>\n";
-        print "<p>";
-        print "<table><tr><th>Message</th></tr>\n";
-        print "<tr><td>";
-        print stripslashes($row["message"]);
-        print "</td></tr>";
-        print "</table></p>\n";
+        if ($msg != "") {
+          print "<p>";
+          print "<table><tr><th>Message</th></tr>\n";
+          print "<tr><td>" . $msg . "</td></tr>";
+          print "</table></p>\n";
+        }
         $stmt="select * from players where hostport=\"$server_port\" order by name";
         $res = fcdb_exec($stmt);
         $nr = fcdb_num_rows($res);
