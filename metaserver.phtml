@@ -17,7 +17,6 @@ if ($error_msg != NULL) {
 if (! $config_problem) {
   include_once("php_code/php_code_find.php");
   // includes for support routines
-  include_once(php_code_find("shared_variables.php"));
   include_once(php_code_find("fcdb.php"));
   include_once(php_code_find("versions_file.php"));
   include_once(php_code_find("img.php"));
@@ -320,7 +319,9 @@ if ( isset($port) ) {
   print "    <title>Freeciv Metaserver</title>\n";
   print "    <link>$fullself</link>\n";
   print "    <description>Freeciv Servers</description>\n";
-  print "    <webMaster>$webmasteraddr</webMaster>\n";
+  if ($webmaster_email != NULL) {
+    print "    <webMaster>$webmaster_email</webMaster>\n";
+  }
   print "    <lastBuildDate>".date('r')."</lastBuildDate>\n";
   $stmt="select host,port,version,patches,state,topic,unix_timestamp(stamp) as date,available,serverid from servers order by host,port asc";
   $res = fcdb_exec($stmt);
@@ -546,14 +547,17 @@ echo "</a>";
 <br />
 Latest stable release is <?php echo versions_current(); ?>.
 <br />
-Please report any bugs to <?php echo $bugs; ?>.
-<br /><br />
-Start your civserver with the -m option if you want it listed here.</em></p>
+
 <?
+      if ($bugs_html != NULL) {
+        echo "Please report any bugs to " . $bugs_html . ".";
+      }
+      echo "<br /><br />";
+      echo "Start your civserver with the -m option if you want it listed here.</em></p>";
     }
-  echo "<br /><br /><p class=\"center\">";
-  img_html("hr.gif", "--------", NULL);
-  echo "</p><br /><br />";
+    echo "<br /><br /><p class=\"center\">";
+    img_html("hr.gif", "--------", NULL);
+    echo "</p><br /><br />";
   }
 ?>
 

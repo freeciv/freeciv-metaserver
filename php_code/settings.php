@@ -1,7 +1,6 @@
 <?
 
 $error_msg = NULL;
-global $error_msg;
 
 if (file_exists("php_code/local.php")) {
   $localsettings = fopen('php_code/local.php', 'r');
@@ -42,6 +41,33 @@ if ($pic_paths == NULL) {
   // Search pics under metaserver directory and under server root.
   $pic_paths = array($metaserver_root . "pics/" => $metaserver_url_path . "pics/",
                      $_SERVER[DOCUMENT_ROOT] . "pics/" => "pics/");
+}
+
+if ($webmaster_name == NULL) {
+  $webmaster_name = "Webmaster";
+  $webmaster_default = true;
+}
+
+if ($webmaster_addr == NULL && $webmaster_email != NULL) {
+  $webmaster_addr = "mailto:$webmaster_email";
+}
+
+if ($webmaster_addr == NULL) {
+  $webmaster_html = $webmaster_name;
+} else {
+  $webmaster_html = "<A HREF=\"$webmaster_addr\">$webmaster_name</A>";
+}
+
+if ($bugs_addr == NULL) {
+  $bugs_html = $bugs_name;
+} else {
+  if ($bugs_name == NULL) {
+    $bugs_link = "to this address";
+  } else {
+    $bugs_link = $bugs_name;
+  }
+
+  $bugs_html = "<A HREF=\"$bugs_addr\">$bugs_link</A>";
 }
 
 // Check configuration

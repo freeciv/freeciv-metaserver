@@ -1,14 +1,14 @@
 <?php
 /*
  * You must include the following before including this file:
- *     include_once("php_code/shared_variables.php");
+ *     include_once("php_code/settings.php");
  *     include_once("php_code/fcdb.php");
  */
 
 /* Emit the current poll as a form within a table. */
 
 function polls_emit_poll() {
-  global $webmaster;
+  global $webmaster_html;
 
   fcdb_default_connect();
 
@@ -46,7 +46,7 @@ function polls_emit_poll() {
     echo '</CENTER>', "\n";
     echo '</FORM>', "\n";
   } else {
-    echo "Poll is broken, contact $webmaster.<BR>\n";
+    echo "Poll is broken, contact $webmaster_html.<BR>\n";
   }
 
   echo '<HR noshade>', "\n";
@@ -69,7 +69,7 @@ function polls_emit_poll() {
    Update with a vote, if one is provided (limit one vote per IP address). */
 
 function polls_emit_results() {
-  global $webmaster;
+  global $webmaster_html;
   $submit =$_REQUEST['submit'];
   $value = $_REQUEST['value'];
   $num = $_REQUEST['num'];
@@ -114,7 +114,7 @@ function polls_emit_results() {
 	$stmt = "update polls set datetime='$date' where id=$realnum";
 	$res = fcdb_exec($stmt);
       } else {
-	echo "Big problems in Little China, contact $webmaster.<BR>\n";
+	echo "Big problems in Little China, contact $webmaster_html.<BR>\n";
       }
     }
   }
@@ -174,7 +174,7 @@ function polls_emit_results() {
 /* Emit the results of all old polls as a table. */
 
 function polls_emit_old_polls() {
-  global $webmaster;
+  global $webmaster_html;
 
   fcdb_default_connect();
 
@@ -208,7 +208,7 @@ function polls_emit_old_polls() {
   echo '</CENTER>', "\n";
   echo '<P>', "\n";
   echo '<HR noshade>', "\n";
-  echo '<P>If you have an interesting suggestion for a poll, mail ', "$webmaster.\n";
+  echo '<P>If you have an interesting suggestion for a poll, mail ', "$webmaster_html.\n";
   echo '</TD>', "\n";
   echo '</TR>', "\n";
   echo '</TABLE>', "\n";

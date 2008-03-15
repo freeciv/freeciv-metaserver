@@ -10,7 +10,6 @@
   include_once("php_code/settings.php");
   include_once("php_code/php_code_find.php");
   // includes for support routines
-  include_once(php_code_find("shared_variables.php"));
   include_once(php_code_find("fcdb.php"));
   include_once(php_code_find("polls.php"));
   include_once(php_code_find("img.php"));
@@ -41,7 +40,7 @@ img_html("headers/oldpolls.gif", "Old Polls", NULL);
 <BR>
 <HR>Return to <a href="/">the main page</A>
 <HR>In case of technical problems, please contact
-<?php echo $webmaster ?>.
+<?php echo $webmaster_html ?>.
 
 <BR><BR>
 <P ALIGN="center">

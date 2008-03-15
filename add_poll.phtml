@@ -150,7 +150,9 @@ if ( $submit=="submit" && $title && $author) {
 
     $message .= "\nApprove or delete this poll: http://thissite.org/private\n";
 
-    mail ($webmasteraddr, 'Poll added', $message);
+    if ($webmaster_addr != NULL) {
+      mail ($webmaster_addr, 'Poll added', $message);
+    }
 
     print ("<h1>Thanks for your poll<h1>");
   } else {

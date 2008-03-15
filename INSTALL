@@ -37,3 +37,25 @@ $pic_paths
   root directory:
     $_SERVER[DOCUMENT_ROOT] . $metaserver_url_path . "pics/" => $metaserver_url_path . "pics/",
     $_SERVER[DOCUMENT_ROOT]/pics/ => "pics/"
+
+$webmaster_email
+  Email address for webmaster
+  Default value is NULL
+
+$webmaster_addr
+  Webmaster URL
+  Default value
+    if $webmaster_email set: "mailto:$webmaster_email"
+    otherwise NULL
+
+$webmaster_name
+  Name of the webmaster.
+  Default value is "Webmaster"
+
+$bugs_addr
+  Bug report URL
+  Default value is NULL
+
+$bugs_name
+  Where to send bug reports
+  Default value is NULL

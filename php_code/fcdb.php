@@ -165,10 +165,12 @@ function fcdb_mktime($time_str) {
 
 // Store error message. Don't send it yet as HTTP headers must be sent first.
 function build_fcdb_error($what_error) {
-  global $webmaster;
+  global $webmaster_html;
+  global $webmaster_default;
+  global $error_msg;
 
-  if ($webmaster != "") {
-    $wmpart = ", $webmaster";
+  if (! $webmaster_default) {
+    $wmpart = ", $webmaster_html";
   } else {
     $wmpart = "";
   }
@@ -181,8 +183,6 @@ function build_fcdb_error($what_error) {
                "<tr><td>" .
                "Please contact the maintainer" . $wmpart .
                ".</td></tr>\n</table></font>\n";
-
-  $GLOBALS['error_msg'] = $error_msg;
 }
 
 ?>
