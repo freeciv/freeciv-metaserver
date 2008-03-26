@@ -20,6 +20,7 @@ if (! $config_problem) {
   include_once(php_code_find("fcdb.php"));
   include_once(php_code_find("versions_file.php"));
   include_once(php_code_find("img.php"));
+  include_once(php_code_find("html.php"));
 
   fcdb_metaserver_connect();
 }
@@ -119,13 +120,13 @@ if ( isset($port) ) {
   }
 
   if (isset($topic)) {
-    $topic = addslashes($topic); /* escape stuff to go into the database */
+    $topic = addneededslashes($topic); /* escape stuff to go into the database */
   }
   if (isset($message)) {
-    $message = addslashes($message); /* escape stuff to go into the database */
+    $message = addneededslashes($message); /* escape stuff to go into the database */
   }
   if (isset($serverid)) {
-    $serverid = addslashes($serverid); /* escape stuff to go into the database */
+    $serverid = addneededslashes($serverid); /* escape stuff to go into the database */
   }
 
 
@@ -136,19 +137,19 @@ if ( isset($port) ) {
       $ins = "insert into players set hostport=\"$host:$port\", ";
 
       if (isset($plu[$i]) ) {
-        $plu[$i] = addslashes($plu[$i]);
+        $plu[$i] = addneededslashes($plu[$i]);
         $ins .= "user=\"$plu[$i]\", ";
       }
       if (isset($pll[$i]) ) {
-        $pll[$i] = addslashes($pll[$i]);
+        $pll[$i] = addneededslashes($pll[$i]);
         $ins .= "name=\"$pll[$i]\", ";
       }
       if (isset($pln[$i]) ) {
-        $pln[$i] = addslashes($pln[$i]);
+        $pln[$i] = addneededslashes($pln[$i]);
         $ins .= "nation=\"$pln[$i]\", ";
       }
       if (isset($plt[$i]) ) {
-        $plt[$i] = addslashes($plt[$i]);
+        $plt[$i] = addneededslashes($plt[$i]);
         $ins .= "type=\"$plt[$i]\", ";
       }
       $ins .= "host=\"$plh[$i]\"";
@@ -166,8 +167,8 @@ if ( isset($port) ) {
   $variablestmt = array();
   if (isset($vn)) {
     for ($i = 0; $i < count($vn); $i++) { /* run through all the names */
-      $vn[$i] = addslashes($vn[$i]);
-      $vv[$i] = addslashes($vv[$i]);
+      $vn[$i] = addneededslashes($vn[$i]);
+      $vv[$i] = addneededslashes($vv[$i]);
       $ins = "insert into variables set hostport=\"$host:$port\", ";
       $ins .= "name=\"$vn[$i]\", ";
       $ins .= "value=\"$vv[$i]\"";
@@ -410,7 +411,7 @@ div {
     echo $error_msg;
   } else {
     if (isset($server_port)) {
-      print "<h1>Freeciv server $server_port</h1><br />\n";
+      print "<h1>Freeciv server " . db2html($server_port) . "</h1><br />\n";
       list($host, $port)=preg_split("/:/",$server_port);
       $stmt = "select * from servers where host=\"$host\" and port=\"$port\"";
       $res = fcdb_exec($stmt);
@@ -419,20 +420,20 @@ div {
         print "Cannot find the specified server";
       } else {
         $row = fcdb_fetch_array($res, 0);
-        $msg = stripslashes($row["message"]);
+        $msg = db2html($row["message"]);
         print "<table><tr><th>Version</th><th>Patches</th><th>Capabilities</th>";
         print "<th>State</th>";
         print "<th>Server ID</th></tr>\n";
         print "<tr><td>";
-        print $row["version"];
+        print db2html($row["version"]);
         print "</td><td>";
-        print stripslashes($row["patches"]);
+        print db2html($row["patches"]);
         print "</td><td>";
-        print stripslashes($row["capability"]);
+        print db2html($row["capability"]);
         print "</td><td>";
-        print $row["state"];
+        print db2html($row["state"]);
         print "</td><td>";
-        print stripslashes($row["serverid"]);
+        print db2html($row["serverid"]);
         print "</td></tr>\n</table></p>\n";
         if ($msg != "") {
           print "<p>";
@@ -450,15 +451,15 @@ div {
           for ( $inx = 0; $inx < $nr; $inx++ ) {
             $row = fcdb_fetch_array($res, $inx);
             print "<tr><td class=\"left\">";
-            print stripslashes($row["name"]);
+            print db2html($row["name"]);
             print "</td><td>";
-            print stripslashes($row["nation"]);
+            print db2html($row["nation"]);
             print "</td><td>";
-            print stripslashes($row["user"]);
+            print db2html($row["user"]);
             print "</td><td>";
-            print stripslashes($row["type"]);
+            print db2html($row["type"]);
             print "</td><td>";
-            print stripslashes($row["host"]);
+            print db2html($row["host"]);
             print "</td></tr>\n";
           }
           print "</table></div><p>\n";
@@ -474,9 +475,9 @@ div {
           for ( $inx = 0; $inx < $nr; $inx++ ) {
             $row = fcdb_fetch_array($res, $inx);
             print "<tr><td>";
-            print $row["name"];
+            print db2html($row["name"]);
             print "</td><td>";
-            print $row["value"];
+            print db2html($row["value"]);
             print "</td></tr>\n";
           }
           print "</table></div>";
@@ -499,26 +500,26 @@ div {
           $row = fcdb_fetch_array($res, $inx);
           print "<tr><td class=\"left\">";
           print "<a href=\"".$_SERVER["PHP_SELF"]."?server_port=";
-          print $row["host"];
+          print db2html($row["host"]);
           print ":";
-          print $row["port"];
+          print db2html($row["port"]);
           print "\">";
-          print $row["host"];
+          print db2html($row["host"]);
           print "</a>";
           print "</td><td>";
-          print $row["port"];
+          print db2html($row["port"]);
           print "</td><td>";
-          print $row["version"];
+          print db2html($row["version"]);
           print "</td><td>";
-          print stripslashes($row["patches"]);
+          print db2html($row["patches"]);
           print "</td><td>";
-          print $row["state"];
+          print db2html($row["state"]);
           print "</td><td>";
           $stmt="select * from players where hostport=\"".$row['host'].":".$row['port']."\"";
           $res1 = fcdb_exec($stmt);
           print fcdb_num_rows($res1);
           print "</td><td style=\"width: 30%\">";
-          print stripslashes($row["topic"]);
+          print db2html($row["topic"]);
           print "</td><td>";
           $time_sec = $row["unix_timestamp()-unix_timestamp(stamp)"];
           $last_update = sprintf("%ss", $time_sec);
@@ -527,7 +528,7 @@ div {
           }
           print $last_update;
           print "</td><td>";
-          print $row["available"];
+          print db2html($row["available"]);
 	  print "</td></tr>\n";
         }
         print "</table>";
