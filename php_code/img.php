@@ -9,7 +9,6 @@ function img_html($pic, $alt, $extra) {
     $pic_file = $filepath . $pic;
 
     if ($pic_found == NULL && file_exists($pic_file)) {
-      error_log("Found from $filepath");
       $pic_found = $filepath;
       break;
     }
