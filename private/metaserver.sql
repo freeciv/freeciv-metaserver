@@ -8,7 +8,7 @@
 --
 
 CREATE TABLE players (
-  hostport varchar(255) NOT NULL default 'unknown:5555',
+  hostport varchar(255) NOT NULL default 'unknown:5556',
   name varchar(64) NOT NULL default 'name',
   user varchar(64) default NULL,
   nation varchar(64) default NULL,
@@ -23,7 +23,7 @@ CREATE TABLE players (
 
 CREATE TABLE servers (
   host varchar(249) NOT NULL default 'unknown',
-  port int(11) NOT NULL default '5555',
+  port int(11) NOT NULL default '5556',
   version varchar(64) default 'unknown',
   patches varchar(255) default 'none',
   capability varchar(255) default NULL,
