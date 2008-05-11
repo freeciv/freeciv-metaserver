@@ -14,9 +14,13 @@ $metaserver_url_path
   pointing to webserver root.
   Default value is "" (webserver root)
 
+$metaserver_root
+  Filesystem path to metaserver root.
+  Default value is "$_SERVER[DOCUMENT_ROOT]$metaserver_url_path"
+
 $versions_file
   Filesystem name for file to read Freeciv version information from.
-  Default value is "$_SERVER[DOCUMENT_ROOT]$metaserver_url_path/versions"
+  Default value is "$metaserver_root/versions"
 
 $fcdb_default_db
   Name of the default database
@@ -40,7 +44,7 @@ $pic_paths
 
   Default value searches from pics subdirectories under metaserver directory and webserver 
   root directory:
-    $_SERVER[DOCUMENT_ROOT] . $metaserver_url_path . "pics/" => $metaserver_url_path . "pics/",
+    $metaserver_root . "pics/" => $metaserver_url_path . "pics/",
     $_SERVER[DOCUMENT_ROOT]/pics/ => "pics/"
 
 $webmaster_email

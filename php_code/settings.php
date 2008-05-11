@@ -15,7 +15,9 @@ if ($metaserver_url_path == NULL) {
   $metaserver_url_path = "";
 }
 
-$metaserver_root = $_SERVER[DOCUMENT_ROOT] . $metaserver_url_path;
+if ($metaserver_root == NULL) {
+  $metaserver_root = $_SERVER[DOCUMENT_ROOT] . $metaserver_url_path;
+}
 
 if ($versions_file == NULL) {
   $versions_file = $metaserver_root . "versions";
