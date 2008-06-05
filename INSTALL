@@ -68,3 +68,7 @@ $bugs_addr
 $bugs_name
   Where to send bug reports
   Default value is NULL
+
+$metaserver_header
+  Main header to display on metaserver page
+  Default value is "Freeciv servers around the world"

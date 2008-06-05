@@ -1,4 +1,4 @@
-<?
+<?php
 
 $error_msg = NULL;
 
@@ -70,6 +70,10 @@ if ($bugs_addr == NULL) {
   }
 
   $bugs_html = "<A HREF=\"$bugs_addr\">$bugs_link</A>";
+}
+
+if ($metaserver_header == NULL) {
+  $metaserver_header = "Freeciv servers around the world";
 }
 
 // Check configuration
