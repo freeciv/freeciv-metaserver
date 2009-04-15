@@ -3,7 +3,7 @@
 function db2html($orig) {
   // Remove escaping sent by client (needed for example for handling '#')
   // Add html escaping instead.
-  return htmlentities(stripslashes($orig));
+  return htmlentities(stripslashes($orig), ENT_COMPAT, "UTF-8");
 }
 
 function addneededslashes($orig) {
