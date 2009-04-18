@@ -277,12 +277,12 @@ if ( isset($port) ) {
         if ($nr1 > 0) {
           $output .= "player = { \"name\", \"user\", \"nation\", \"type\", \"host\"\n";
           for ($i = 0; $i < $nr1; $i++) {
-            $row = fcdb_fetch_array($res1, $i);
-            $output .= sprintf(" \"%s\", ", stripslashes($row["name"]));
-            $output .= sprintf("\"%s\", ", stripslashes($row["user"]));
-            $output .= sprintf("\"%s\", ", stripslashes($row["nation"]));
-            $output .= sprintf("\"%s\", ", stripslashes($row["type"]));
-            $output .= sprintf("\"%s\"\n", stripslashes($row["host"]));
+            $prow = fcdb_fetch_array($res1, $i);
+            $output .= sprintf(" \"%s\", ", stripslashes($prow["name"]));
+            $output .= sprintf("\"%s\", ", stripslashes($prow["user"]));
+            $output .= sprintf("\"%s\", ", stripslashes($prow["nation"]));
+            $output .= sprintf("\"%s\", ", stripslashes($prow["type"]));
+            $output .= sprintf("\"%s\"\n", stripslashes($prow["host"]));
           }
           $output .= "}\n";
         }
@@ -293,9 +293,9 @@ if ( isset($port) ) {
         if ($nr2 > 0) {
           $output .= "vars = { \"name\", \"value\"\n";
           for ($i = 0; $i < $nr2; $i++) {
-            $row = fcdb_fetch_array($res2, $i);
-            $output .= sprintf(" \"%s\", ", $row["name"]);
-            $output .= sprintf("\"%s\"\n ", $row["value"]);
+            $vrow = fcdb_fetch_array($res2, $i);
+            $output .= sprintf(" \"%s\", ", $vrow["name"]);
+            $output .= sprintf("\"%s\"\n ", $vrow["value"]);
           }
           $output .= "}\n";
         }
