@@ -39,6 +39,7 @@ $posts = array(
   "message",
   "serverid",
   "available",
+  "humans",
   "vn",
   "vv",
   "plrs",
@@ -66,6 +67,7 @@ $sqlvars = array(
   "topic",
   "message",
   "available",
+  "humans",
   "serverid"
 );
 
@@ -203,7 +205,9 @@ if ( isset($port) ) {
     $string = array();
 
     foreach($sqlvars as $var) {
+      if (isset($assoc_array[$var])) {
         array_push($string, "$var=\"$assoc_array[$var]\"");
+      }
     }
 
     /* we always want to update the timestamp */
@@ -234,7 +238,7 @@ if ( isset($port) ) {
 
     /* if dropplrs=1 then set available back to 0 */
     if (isset($dropplrs)) {
-      $avstmt = "update servers set available=0 where host=\"$host\" and port=\"$port\"";
+      $avstmt = "update servers set available=0, humans=-1 where host=\"$host\" and port=\"$port\"";
       $res = fcdb_exec($avstmt);
     }
 
@@ -324,7 +328,7 @@ if ( isset($port) ) {
     print "    <webMaster>$webmaster_email</webMaster>\n";
   }
   print "    <lastBuildDate>".date('r')."</lastBuildDate>\n";
-  $stmt="select host,port,version,patches,state,topic,unix_timestamp(stamp) as date,available,serverid from servers order by host,port asc";
+  $stmt="select host,port,version,patches,state,topic,unix_timestamp(stamp) as date,available,humans,serverid from servers order by host,port asc";
   $res = fcdb_exec($stmt);
   $nr = fcdb_num_rows($res);
   if ( $nr > 0 ) {
@@ -347,6 +351,9 @@ if ( isset($port) ) {
       print "      Topic: ".stripslashes($row["topic"])."<br /> ";
       print "      Players: ".$players."<br /> ";
       print "      Available: ".$row["available"]."<br /> ";
+      if ($row["humans"] != "-1") {
+        print "      Humans: ".$row["humans"]."<br /> ";
+      }
       print "      Serverid: ".stripslashes($row["serverid"])."<br /> ";
       print "    </description>\n";
       print "    <pubDate>".date('r',$row["date"])."</pubDate>\n";
@@ -488,7 +495,7 @@ div {
       }
     } else {
       print "<h1>$metaserver_header</h1><br />\n";
-      $stmt="select host,port,version,patches,state,topic,unix_timestamp()-unix_timestamp(stamp),available from servers order by host,port asc";
+      $stmt="select host,port,version,patches,state,topic,unix_timestamp()-unix_timestamp(stamp),available,humans from servers order by host,port asc";
       $res = fcdb_exec($stmt);
       $nr = fcdb_num_rows($res);
       if ( $nr > 0 ) {
@@ -496,7 +503,8 @@ div {
         print "<tr><th class=\"left\">Host</th><th>Port</th>";
         print "<th>Version</th><th>Patches</th><th>State</th><th>Players</th>";
         print "<th>Topic</th><th>Last Update</th>";
-        print "<th>Players Available</th></tr>\n";
+        print "<th>Players Available</th>";
+        print "<th>Human Players</th></tr>\n";
         for ( $inx = 0; $inx < $nr; $inx++ ) {
           $row = fcdb_fetch_array($res, $inx);
           print "<tr><td class=\"left\">";
@@ -530,7 +538,14 @@ div {
           print $last_update;
           print "</td><td>";
           print db2html($row["available"]);
-	  print "</td></tr>\n";
+	  print "</td><td>";
+          $humcount = $row["humans"];
+          if ($humcount == -1) {
+            print "Unknown";
+          } else {
+            print $humcount;
+          }
+          print "</td></tr>\n";
         }
         print "</table>";
       } else {
