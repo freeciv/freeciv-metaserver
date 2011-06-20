@@ -251,11 +251,13 @@ if ( isset($port) ) {
   /* We've done the database so we're done */
 
 } elseif ( isset($client_cap) || isset($client) ) {
+  $output = "";
+  $output .= "[versions]\n";
+  $output .= "latest_stable=\"" . versions_current() . "\"\n";
   $stmt="select * from servers order by host,port asc";
   $res = fcdb_exec($stmt);
   $nr = fcdb_num_rows($res);
   $nservers=0;
-  $output="";
   if ( $nr > 0 ) {
     for ($inx = 0; $inx < $nr; $inx++) {
       $row = fcdb_fetch_array($res, $inx);
