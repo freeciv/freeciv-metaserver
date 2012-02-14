@@ -19,10 +19,6 @@ if ($metaserver_root == NULL) {
   $metaserver_root = $_SERVER[DOCUMENT_ROOT] . $metaserver_url_path;
 }
 
-if ($versions_file == NULL) {
-  $versions_file = $metaserver_root . "versions";
-}
-
 if ($fcdb_default_db == NULL) {
   $fcdb_default_db = "default";
 }

@@ -251,9 +251,14 @@ if ( isset($port) ) {
   /* We've done the database so we're done */
 
 } elseif ( isset($client_cap) || isset($client) ) {
+  global $freeciv_versions;
   $output = "";
   $output .= "[versions]\n";
-  $output .= "latest_stable=\"" . versions_current() . "\"\n";
+  $output .= "latest_stable=\"" . version_by_tag("stable") . "\"\n";
+  $verkeys = array_keys($freeciv_versions);
+  foreach ($verkeys as $key) {
+    $output .= "$key=\"" . version_by_tag("$key") . "\"\n";
+  }
   $stmt="select * from servers order by host,port asc";
   $res = fcdb_exec($stmt);
   $nr = fcdb_num_rows($res);
@@ -565,7 +570,7 @@ echo "</a>";
 ?>
 
 <br />
-Latest stable release is <?php echo versions_current(); ?>.
+Latest stable release is <?php echo version_by_tag("stable"); ?>.
 <br />
 
 <?
