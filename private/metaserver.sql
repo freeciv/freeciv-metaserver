@@ -42,9 +42,8 @@ CREATE TABLE servers (
 --
 
 CREATE TABLE variables (
-  hostport varchar(64) NOT NULL default '',
+  hostport varchar(255) NOT NULL default '',
   name varchar(64) NOT NULL default '',
   value varchar(64) default NULL,
   PRIMARY KEY  (hostport,name)
 ) TYPE=MyISAM;
-
