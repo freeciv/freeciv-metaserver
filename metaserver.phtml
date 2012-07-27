@@ -563,7 +563,7 @@ div {
 <br />
 <p class="center"><em>
 
-<?
+<?php
 echo "<a href=\"./metaserver.phtml?rss=1\">";
 img_html("rss.png", "RSS1", "BORDER=0");
 echo "</a>";
@@ -573,7 +573,7 @@ echo "</a>";
 Latest stable release is <?php echo version_by_tag("stable"); ?>.
 <br />
 
-<?
+<?php
       if ($bugs_html != NULL) {
         echo "Please report any bugs to " . $bugs_html . ".";
       }
