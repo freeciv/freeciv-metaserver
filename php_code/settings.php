@@ -2,6 +2,21 @@
 
 $error_msg = NULL;
 
+$metaserver_url_path = NULL;
+$metaserver_root = NULL;
+$fcdb_default_db = NULL;
+$fcdb_metaserver_db = NULL;
+$fcdb_username = NULL;
+$fcdb_pw = NULL;
+$pic_paths = NULL;
+$webmaster_name = NULL;
+$webmaster_addr = NULL;
+$webmaster_email = NULL;
+$bugs_addr = NULL;
+$bugs_name = NULL;
+$metaserver_header = NULL;
+$metaURL = NULL;
+
 if (file_exists("php_code/local.php")) {
   $localsettings = fopen('php_code/local.php', 'r');
 }

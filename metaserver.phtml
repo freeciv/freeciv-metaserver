@@ -5,6 +5,9 @@
  */
 $debug=0;
 
+$included_fallback_find_file_php = false;
+$config_problem = false;
+
 // include the php-code finder
 ini_set("include_path", ini_get("include_path") . ":" . $_SERVER["DOCUMENT_ROOT"]);
 
