@@ -40,6 +40,7 @@ $posts = array(
   "state",
   "topic",
   "message",
+  "type",
   "serverid",
   "available",
   "humans",
@@ -69,6 +70,7 @@ $sqlvars = array(
   "state",
   "topic",
   "message",
+  "type",
   "available",
   "humans",
   "serverid"
@@ -129,6 +131,9 @@ if ( isset($port) ) {
   }
   if (isset($message)) {
     $message = addneededslashes($message); /* escape stuff to go into the database */
+  }
+  if (isset($type)) {
+    $type = addneededslashes($type); /* escape before inserting to the database */
   }
   if (isset($serverid)) {
     $serverid = addneededslashes($serverid); /* escape stuff to go into the database */
@@ -262,7 +267,7 @@ if ( isset($port) ) {
   foreach ($verkeys as $key) {
     $output .= "$key=\"" . version_by_tag("$key") . "\"\n";
   }
-  $stmt="select * from servers order by host,port asc";
+  $stmt="select * from servers where type is NULL order by host,port asc";
   $res = fcdb_exec($stmt);
   $nr = fcdb_num_rows($res);
   $nservers=0;
@@ -338,7 +343,7 @@ if ( isset($port) ) {
     print "    <webMaster>$webmaster_email</webMaster>\n";
   }
   print "    <lastBuildDate>".date('r')."</lastBuildDate>\n";
-  $stmt="select host,port,version,patches,state,topic,unix_timestamp(stamp) as date,available,humans,serverid from servers order by host,port asc";
+  $stmt="select host,port,version,patches,state,topic,unix_timestamp(stamp) as date,available,humans,serverid from servers where type is NULL order by host,port asc";
   $res = fcdb_exec($stmt);
   $nr = fcdb_num_rows($res);
   if ( $nr > 0 ) {
@@ -505,7 +510,7 @@ div {
       }
     } else {
       print "<h1>$metaserver_header</h1><br />\n";
-      $stmt="select host,port,version,patches,state,topic,unix_timestamp()-unix_timestamp(stamp),available,humans from servers order by host,port asc";
+      $stmt="select host,port,version,patches,state,topic,unix_timestamp()-unix_timestamp(stamp),available,humans from servers where type is NULL order by host,port asc";
       $res = fcdb_exec($stmt);
       $nr = fcdb_num_rows($res);
       if ( $nr > 0 ) {

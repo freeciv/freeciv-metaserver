@@ -30,6 +30,7 @@ CREATE TABLE servers (
   state varchar(20) default 'Pregame',
   topic varchar(255) default 'none',
   message varchar(255) default 'none',
+  type varchar(20) default NULL,
   stamp timestamp(14) NOT NULL,
   available int(11) default '0',
   humans int(11) default '-1',
