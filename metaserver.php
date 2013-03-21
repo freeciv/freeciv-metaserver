@@ -38,7 +38,6 @@ $posts = array(
   "patches",
   "capability",
   "state",
-  "topic",
   "message",
   "type",
   "serverid",
@@ -68,7 +67,6 @@ $sqlvars = array(
   "patches",
   "capability",
   "state",
-  "topic",
   "message",
   "type",
   "available",
@@ -126,9 +124,6 @@ if ( isset($port) ) {
     exit(0); /* toss all entries and exit */
   }
 
-  if (isset($topic)) {
-    $topic = addneededslashes($topic); /* escape stuff to go into the database */
-  }
   if (isset($message)) {
     $message = addneededslashes($message); /* escape stuff to go into the database */
   }
@@ -343,7 +338,7 @@ if ( isset($port) ) {
     print "    <webMaster>$webmaster_email</webMaster>\n";
   }
   print "    <lastBuildDate>".date('r')."</lastBuildDate>\n";
-  $stmt="select host,port,version,patches,state,topic,unix_timestamp(stamp) as date,available,humans,serverid from servers where type is NULL order by host,port asc";
+  $stmt="select host,port,version,patches,state,message,unix_timestamp(stamp) as date,available,humans,serverid from servers where type is NULL order by host,port asc";
   $res = fcdb_exec($stmt);
   $nr = fcdb_num_rows($res);
   if ( $nr > 0 ) {
@@ -363,7 +358,7 @@ if ( isset($port) ) {
       print "      Version: ".$row["version"]."<br /> ";
       print "      Patches: ".stripslashes($row["patches"])."<br /> ";
       print "      State: ".$row["state"]."<br /> ";
-      print "      Topic: ".stripslashes($row["topic"])."<br /> ";
+      print "      Message: ".stripslashes($row["message"])."<br /> ";
       print "      Players: ".$players."<br /> ";
       print "      Available: ".$row["available"]."<br /> ";
       if ($row["humans"] != "-1") {
@@ -510,14 +505,14 @@ div {
       }
     } else {
       print "<h1>$metaserver_header</h1><br />\n";
-      $stmt="select host,port,version,patches,state,topic,unix_timestamp()-unix_timestamp(stamp),available,humans from servers where type is NULL order by host,port asc";
+      $stmt="select host,port,version,patches,state,message,unix_timestamp()-unix_timestamp(stamp),available,humans from servers where type is NULL order by host,port asc";
       $res = fcdb_exec($stmt);
       $nr = fcdb_num_rows($res);
       if ( $nr > 0 ) {
         print "<table>\n";
         print "<tr><th class=\"left\">Host</th><th>Port</th>";
         print "<th>Version</th><th>Patches</th><th>State</th><th>Players</th>";
-        print "<th>Topic</th><th>Last Update</th>";
+        print "<th>Message</th><th>Last Update</th>";
         print "<th>Players Available</th>";
         print "<th>Human Players</th></tr>\n";
         for ( $inx = 0; $inx < $nr; $inx++ ) {
@@ -543,7 +538,7 @@ div {
           $res1 = fcdb_exec($stmt);
           print fcdb_num_rows($res1);
           print "</td><td style=\"width: 30%\">";
-          print db2html($row["topic"]);
+          print db2html($row["message"]);
           print "</td><td>";
           $time_sec = $row["unix_timestamp()-unix_timestamp(stamp)"];
           $last_update = sprintf("%ss", $time_sec);
