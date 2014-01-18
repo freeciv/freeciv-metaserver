@@ -1,0 +1,4 @@
+This version of the metaserver is based on deprecated/obsolete
+mysql extension of php. This maintenance branch exist only for those
+installations where PDO is not an option. Avoid using this version
+if you can use the regular version.
