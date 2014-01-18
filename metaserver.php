@@ -268,7 +268,7 @@ if ( isset($port) ) {
   $nservers=0;
   if ( $nr > 0 ) {
     for ($inx = 0; $inx < $nr; $inx++) {
-      $row = fcdb_fetch_array($res, $inx);
+      $row = fcdb_fetch_next_row($res, $inx);
       // debug("db = \"".$row["capability"]." \" vs \"$client_cap\"\n");
       /* we only want to show compatable servers */
       if ( $client == "all"  || 
@@ -291,7 +291,7 @@ if ( isset($port) ) {
         if ($nr1 > 0) {
           $output .= "player = { \"name\", \"user\", \"nation\", \"type\", \"host\"\n";
           for ($i = 0; $i < $nr1; $i++) {
-            $prow = fcdb_fetch_array($res1, $i);
+            $prow = fcdb_fetch_next_row($res1, $i);
             $output .= sprintf(" \"%s\", ", stripslashes($prow["name"]));
             $output .= sprintf("\"%s\", ", stripslashes($prow["user"]));
             $output .= sprintf("\"%s\", ", stripslashes($prow["nation"]));
@@ -307,7 +307,7 @@ if ( isset($port) ) {
         if ($nr2 > 0) {
           $output .= "vars = { \"name\", \"value\"\n";
           for ($i = 0; $i < $nr2; $i++) {
-            $vrow = fcdb_fetch_array($res2, $i);
+            $vrow = fcdb_fetch_next_row($res2, $i);
             $output .= sprintf(" \"%s\", ", $vrow["name"]);
             $output .= sprintf("\"%s\"\n ", $vrow["value"]);
           }
@@ -343,7 +343,7 @@ if ( isset($port) ) {
   $nr = fcdb_num_rows($res);
   if ( $nr > 0 ) {
     for ( $inx = 0; $inx < $nr; $inx++ ) {
-      $row = fcdb_fetch_array($res, $inx);
+      $row = fcdb_fetch_next_row($res, $inx);
       $link="$fullself?server_port=".$row["host"].":".$row["port"];
       $stmt="select * from players where hostport=\"".$row['host'].":".$row['port']."\"";
       $res1 = fcdb_exec($stmt);
@@ -437,7 +437,7 @@ div {
       if ( $nr != 1 ) {
         print "Cannot find the specified server";
       } else {
-        $row = fcdb_fetch_array($res, 0);
+        $row = fcdb_fetch_next_row($res, 0);
         $msg = db2html($row["message"]);
         print "<table><tr><th>Version</th><th>Patches</th><th>Capabilities</th>";
         print "<th>State</th>";
@@ -467,7 +467,7 @@ div {
           print "<tr><th class=\"left\">Leader</th><th>Nation</th>";
           print "<th>User</th><th>Type</th><th>Host</th></tr>\n";
           for ( $inx = 0; $inx < $nr; $inx++ ) {
-            $row = fcdb_fetch_array($res, $inx);
+            $row = fcdb_fetch_next_row($res, $inx);
             print "<tr><td class=\"left\">";
             print db2html($row["name"]);
             print "</td><td>";
@@ -491,7 +491,7 @@ div {
           print "<div><table>\n";
           print "<tr><th class=\"left\">Option</th><th>Value</th></tr>\n";
           for ( $inx = 0; $inx < $nr; $inx++ ) {
-            $row = fcdb_fetch_array($res, $inx);
+            $row = fcdb_fetch_next_row($res, $inx);
             print "<tr><td>";
             print db2html($row["name"]);
             print "</td><td>";
@@ -516,7 +516,7 @@ div {
         print "<th>Players Available</th>";
         print "<th>Human Players</th></tr>\n";
         for ( $inx = 0; $inx < $nr; $inx++ ) {
-          $row = fcdb_fetch_array($res, $inx);
+          $row = fcdb_fetch_next_row($res, $inx);
           print "<tr><td class=\"left\">";
           print "<a href=\"".$_SERVER["PHP_SELF"]."?server_port=";
           print db2html($row["host"]);
