@@ -567,7 +567,7 @@ div {
 <p class="center"><em>
 
 <?php
-echo "<a href=\"./metaserver.phtml?rss=1\">";
+echo "<a href=\"./metaserver.php?rss=1\">";
 img_html("rss.png", "RSS1", "BORDER=0");
 echo "</a>";
 ?>
