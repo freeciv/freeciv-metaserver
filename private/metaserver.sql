@@ -47,4 +47,4 @@ CREATE TABLE variables (
   name varchar(64) NOT NULL default '',
   value varchar(64) default NULL,
   PRIMARY KEY  (hostport,name)
-) TYPE=MyISAM;
+);
