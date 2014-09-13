@@ -12,6 +12,7 @@ CREATE TABLE players (
   name varchar(64) NOT NULL default 'name',
   user varchar(64) default NULL,
   nation varchar(64) default NULL,
+  flag varchar(128) default NULL,
   type varchar(10) default NULL,
   host varchar(255) default 'unknown',
   PRIMARY KEY  (hostport,name)
