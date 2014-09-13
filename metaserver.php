@@ -38,6 +38,7 @@ $posts = array(
   "patches",
   "capability",
   "state",
+  "ruleset",
   "message",
   "type",
   "serverid",
@@ -67,6 +68,7 @@ $sqlvars = array(
   "patches",
   "capability",
   "state",
+  "ruleset",
   "message",
   "type",
   "available",
@@ -338,7 +340,7 @@ if ( isset($port) ) {
     print "    <webMaster>$webmaster_email</webMaster>\n";
   }
   print "    <lastBuildDate>".date('r')."</lastBuildDate>\n";
-  $stmt="select host,port,version,patches,state,message,unix_timestamp(stamp) as date,available,humans,serverid from servers where type is NULL order by host,port asc";
+  $stmt="select host,port,version,patches,state,ruleset,message,unix_timestamp(stamp) as date,available,humans,serverid from servers where type is NULL order by host,port asc";
   $res = fcdb_exec($stmt);
   $nr = fcdb_num_rows($res);
   if ( $nr > 0 ) {
@@ -358,6 +360,7 @@ if ( isset($port) ) {
       print "      Version: ".$row["version"]."<br /> ";
       print "      Patches: ".stripslashes($row["patches"])."<br /> ";
       print "      State: ".$row["state"]."<br /> ";
+      print "      Ruleset: ".$row["ruleset"]."<br />";
       print "      Message: ".stripslashes($row["message"])."<br /> ";
       print "      Players: ".$players."<br /> ";
       print "      Available: ".$row["available"]."<br /> ";
@@ -440,7 +443,7 @@ div {
         $row = fcdb_fetch_array($res, 0);
         $msg = db2html($row["message"]);
         print "<table><tr><th>Version</th><th>Patches</th><th>Capabilities</th>";
-        print "<th>State</th>";
+        print "<th>State</th><th>Ruleset</th>";
         print "<th>Server ID</th></tr>\n";
         print "<tr><td>";
         print db2html($row["version"]);
@@ -450,6 +453,8 @@ div {
         print db2html($row["capability"]);
         print "</td><td>";
         print db2html($row["state"]);
+        print "</td><td>";
+        print db2html($row["ruleset"]);
         print "</td><td>";
         print db2html($row["serverid"]);
         print "</td></tr>\n</table></p>\n";
@@ -511,8 +516,8 @@ div {
       if ( $nr > 0 ) {
         print "<table>\n";
         print "<tr><th class=\"left\">Host</th><th>Port</th>";
-        print "<th>Version</th><th>Patches</th><th>State</th><th>Players</th>";
-        print "<th>Message</th><th>Last Update</th>";
+        print "<th>Version</th><th>Patches</th><th>State</th>";
+        print "<th>Players</th><th>Message</th><th>Last Update</th>";
         print "<th>Players Available</th>";
         print "<th>Human Players</th></tr>\n";
         for ( $inx = 0; $inx < $nr; $inx++ ) {
