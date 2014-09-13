@@ -50,6 +50,7 @@ $posts = array(
   "plt",
   "pll",
   "pln",
+  "plf",
   "plu",
   "plh",
   "dropplrs",
@@ -155,6 +156,10 @@ if ( isset($port) ) {
         $pln[$i] = addneededslashes($pln[$i]);
         $ins .= "nation=\"$pln[$i]\", ";
       }
+      if (isset($plf[$i]) ) {
+        $plf[$i] = addneededslashes($plf[$i]);
+        $ins .= "flag=\"$plf[$i]\", ";
+      }
       if (isset($plt[$i]) ) {
         $plt[$i] = addneededslashes($plt[$i]);
         $ins .= "type=\"$plt[$i]\", ";
@@ -162,7 +167,7 @@ if ( isset($port) ) {
       $ins .= "host=\"$plh[$i]\"";
       /* an array of all the sql statements; save actual db access to the end */
       debug("\nINS = $ins\n\n");
-      array_push($playerstmt, $ins); 
+      array_push($playerstmt, $ins);
     }
   }
 
@@ -470,13 +475,15 @@ div {
         if ( $nr > 0 ) {
           print "<p><div><table style=\"width: 60%;\">\n";
           print "<tr><th class=\"left\">Leader</th><th>Nation</th>";
-          print "<th>User</th><th>Type</th><th>Host</th></tr>\n";
+          print "<th>Flag</th><th>User</th><th>Type</th><th>Host</th></tr>\n";
           for ( $inx = 0; $inx < $nr; $inx++ ) {
             $row = fcdb_fetch_array($res, $inx);
             print "<tr><td class=\"left\">";
             print db2html($row["name"]);
             print "</td><td>";
             print db2html($row["nation"]);
+            print "</td><td>";
+            flag_html("f." . $row["flag"]);
             print "</td><td>";
             print db2html($row["user"]);
             print "</td><td>";
