@@ -573,7 +573,7 @@ div {
 
 <?php
 echo "<a href=\"./metaserver.php?rss=1\">";
-img_html("rss.png", "RSS1", "BORDER=0");
+img_html("rss.png", "RSS1", "BORDER=0", NULL);
 echo "</a>";
 ?>
 
@@ -596,7 +596,7 @@ Latest stable release is <?php echo version_by_tag("stable"); ?>.
       echo "</em></p>";
     }
     echo "<br /><br /><p class=\"center\">";
-    img_html("hr.gif", "--------", NULL);
+    img_html("hr.gif", "--------", NULL, NULL);
     echo "</p><br /><br />";
   }
 ?>
