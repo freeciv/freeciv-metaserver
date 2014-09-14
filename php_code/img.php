@@ -37,12 +37,12 @@ function flag_html($tag) {
   global $flags;
 
   if (!array_key_exists($tag, $flags)) {
-    $pic = "unknown.svg";
+    $pic = "unknown.png";
   } else {
     $pic = $flags["$tag"];
   }
 
-  img_html("flags/" . $pic, NULL, NULL, 40);
+  img_html("flags/" . $pic, NULL, NULL, NULL);
 }
 
 ?>
