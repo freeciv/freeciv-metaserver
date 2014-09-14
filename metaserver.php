@@ -475,16 +475,17 @@ div {
         if ( $nr > 0 ) {
           print "<p><div><table style=\"width: 60%;\">\n";
           print "<tr><th class=\"left\">Leader</th><th>Nation</th>";
-          print "<th>Flag</th><th>User</th><th>Type</th><th>Host</th></tr>\n";
+          print "<th>User</th><th>Type</th><th>Host</th></tr>\n";
           for ( $inx = 0; $inx < $nr; $inx++ ) {
             $row = fcdb_fetch_next_row($res, $inx);
             print "<tr><td class=\"left\">";
             print db2html($row["name"]);
             print "</td><td>";
+            print "<table width=\"100%\"><tr><td align=\"left\">";
             print db2html($row["nation"]);
-            print "</td><td>";
+            print "</td><td align=\"right\">";
             flag_html("f." . $row["flag"]);
-            print "</td><td>";
+            print "</td></tr></table></td><td>";
             print db2html($row["user"]);
             print "</td><td>";
             print db2html($row["type"]);
