@@ -488,7 +488,14 @@ div {
             print "</td></tr></table></td><td>";
             print db2html($row["user"]);
             print "</td><td>";
-            print db2html($row["type"]);
+            $type = db2html($row["type"]);
+            if ($type == "A.I.") {
+              img_html("ai.png", $type, NULL, NULL);
+            } else if ($type == "Human") {
+              img_html("human.png", $type, NULL, NULL);
+            } else {
+              print "$type";
+            }
             print "</td><td>";
             print db2html($row["host"]);
             print "</td></tr>\n";
