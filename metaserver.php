@@ -493,6 +493,10 @@ div {
               img_html("ai.png", $type, NULL, NULL);
             } else if ($type == "Human") {
               img_html("human.png", $type, NULL, NULL);
+            } else if ($type == "Dead") {
+              img_html("dead.png", $type, NULL, NULL);
+            } else if ($type == "Barbarian") {
+              img_html("barbarian.png", $type, NULL, NULL);
             } else {
               print "$type";
             }
