@@ -575,7 +575,11 @@ div {
 	  print "</td><td>";
           $humcount = $row["humans"];
           if ($humcount == -1) {
-            print "Unknown";
+            if ($row["available"] == 0) {
+              print 0;
+            } else {
+              print "Unknown";
+            }
           } else {
             print $humcount;
           }
