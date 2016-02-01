@@ -128,15 +128,17 @@ if ( isset($port) ) {
   }
 
   if (isset($message)) {
-    $message = addneededslashes($message); /* escape stuff to go into the database */
+    $message = addneededslashes_db($message); /* escape stuff to go into the database */
   }
   if (isset($type)) {
-    $type = addneededslashes($type); /* escape before inserting to the database */
+    $type = addneededslashes_db($type); /* escape before inserting to the database */
   }
   if (isset($serverid)) {
-    $serverid = addneededslashes($serverid); /* escape stuff to go into the database */
+    $serverid = addneededslashes_db($serverid); /* escape stuff to go into the database */
   }
-
+  if (isset($ruleset)) {
+    $ruleset = addneededslashes_db($ruleset);
+  }
 
   /* lets get the player information arrays if we were given any */
   $playerstmt = array();
@@ -145,23 +147,23 @@ if ( isset($port) ) {
       $ins = "insert into players set hostport=\"$host:$port\", ";
 
       if (isset($plu[$i]) ) {
-        $plu[$i] = addneededslashes($plu[$i]);
+        $plu[$i] = addneededslashes_db($plu[$i]);
         $ins .= "user=\"$plu[$i]\", ";
       }
       if (isset($pll[$i]) ) {
-        $pll[$i] = addneededslashes($pll[$i]);
+        $pll[$i] = addneededslashes_db($pll[$i]);
         $ins .= "name=\"$pll[$i]\", ";
       }
       if (isset($pln[$i]) ) {
-        $pln[$i] = addneededslashes($pln[$i]);
+        $pln[$i] = addneededslashes_db($pln[$i]);
         $ins .= "nation=\"$pln[$i]\", ";
       }
       if (isset($plf[$i]) ) {
-        $plf[$i] = addneededslashes($plf[$i]);
+        $plf[$i] = addneededslashes_db($plf[$i]);
         $ins .= "flag=\"$plf[$i]\", ";
       }
       if (isset($plt[$i]) ) {
-        $plt[$i] = addneededslashes($plt[$i]);
+        $plt[$i] = addneededslashes_db($plt[$i]);
         $ins .= "type=\"$plt[$i]\", ";
       }
       $ins .= "host=\"$plh[$i]\"";
@@ -179,8 +181,8 @@ if ( isset($port) ) {
   $variablestmt = array();
   if (isset($vn)) {
     for ($i = 0; $i < count($vn); $i++) { /* run through all the names */
-      $vn[$i] = addneededslashes($vn[$i]);
-      $vv[$i] = addneededslashes($vv[$i]);
+      $vn[$i] = addneededslashes_db($vn[$i]);
+      $vv[$i] = addneededslashes_db($vv[$i]);
       $ins = "insert into variables set hostport=\"$host:$port\", ";
       $ins .= "name=\"$vn[$i]\", ";
       $ins .= "value=\"$vv[$i]\"";
@@ -365,7 +367,7 @@ if ( isset($port) ) {
       print "      Version: ".$row["version"]."<br /> ";
       print "      Patches: ".stripslashes($row["patches"])."<br /> ";
       print "      State: ".$row["state"]."<br /> ";
-      print "      Ruleset: ".$row["ruleset"]."<br />";
+      print "      Ruleset: ".stripslashes($row["ruleset"])."<br />";
       print "      Message: ".stripslashes($row["message"])."<br /> ";
       print "      Players: ".$players."<br /> ";
       print "      Available: ".$row["available"]."<br /> ";
@@ -453,20 +455,20 @@ div {
         print "<tr><td>";
         print db2html($row["version"]);
         print "</td><td>";
-        print db2html($row["patches"]);
+        print stripslashes(db2html($row["patches"]));
         print "</td><td>";
         print db2html($row["capability"]);
         print "</td><td>";
         print db2html($row["state"]);
         print "</td><td>";
-        print db2html($row["ruleset"]);
+        print stripslashes(db2html($row["ruleset"]));
         print "</td><td>";
-        print db2html($row["serverid"]);
+        print stripslashes(db2html($row["serverid"]));
         print "</td></tr>\n</table></p>\n";
         if ($msg != "") {
           print "<p>";
           print "<table><tr><th>Message</th></tr>\n";
-          print "<tr><td>" . $msg . "</td></tr>";
+          print "<tr><td>" . stripslashes($msg) . "</td></tr>";
           print "</table></p>\n";
         }
         $stmt="select * from players where hostport=\"$server_port\" order by name";
