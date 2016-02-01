@@ -164,7 +164,7 @@ function addneededslashes_db($str) {
     $str = stripslashes($str);
   }
 
-  return mysql_real_escape_string($str);
+  return $fcdb_conn->quote($str);
 }
 
 // Store error message. Don't send it yet as HTTP headers must be sent first.
