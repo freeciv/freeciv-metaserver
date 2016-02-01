@@ -279,10 +279,11 @@ if ( isset($port) ) {
     for ($inx = 0; $inx < $nr; $inx++) {
       $row = fcdb_fetch_next_row($res, $inx);
       // debug("db = \"".$row["capability"]." \" vs \"$client_cap\"\n");
-      /* we only want to show compatable servers */
-      if ( $client == "all"  || 
-           (has_all_capabilities(mandatory_capabilities($row["capability"]),$client_cap) &&
-            has_all_capabilities(mandatory_capabilities($client_cap),$row["capability"]) ) ) {
+      /* we only want to show compatible servers */
+      if ((isset($client) && $client == "all") ||
+          (isset($client_cap) &&
+           has_all_capabilities(mandatory_capabilities($row["capability"]),$client_cap) &&
+           has_all_capabilities(mandatory_capabilities($client_cap),$row["capability"]))) {
         $output .= "[server$nservers]\n";
         $nservers++;
         $output .= sprintf("host = \"%s\"\n", $row["host"]);
