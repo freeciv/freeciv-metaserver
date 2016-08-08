@@ -275,7 +275,7 @@ if ( isset($port) ) {
   $output .= "[version_comments]\n";
   $verkeys = array_keys($version_comments);
   foreach ($verkeys as $key) {
-    $output .= "$key=\""" . comment_by_tag("$key") . "\"\n";
+    $output .= "$key=\"" . comment_by_tag("$key") . "\"\n";
   }
   $stmt="select * from servers where type is NULL order by host,port asc";
   $res = fcdb_exec($stmt);
