@@ -264,12 +264,18 @@ if ( isset($port) ) {
 
 } elseif ( isset($client_cap) || isset($client) ) {
   global $freeciv_versions;
+  global $version_comments;
   $output = "";
   $output .= "[versions]\n";
   $output .= "latest_stable=\"" . version_by_tag("stable") . "\"\n";
   $verkeys = array_keys($freeciv_versions);
   foreach ($verkeys as $key) {
     $output .= "$key=\"" . version_by_tag("$key") . "\"\n";
+  }
+  $output .= "[version_comments]\n";
+  $verkeys = array_keys($version_comments);
+  foreach ($verkeys as $key) {
+    $output .= "$key=\""" . comment_by_tag("$key") . "\"\n";
   }
   $stmt="select * from servers where type is NULL order by host,port asc";
   $res = fcdb_exec($stmt);
