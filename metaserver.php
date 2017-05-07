@@ -1,6 +1,5 @@
 <?php
-# Copyright (C) 2007 - Paul Zastoupil, Reinier Post, Mike Kaufman,
-#   Vasco Costa, Marko Lindqvist
+# Copyright (C) 2007 - Paul Zastoupil, Reinier Post, Marko Lindqvist
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
