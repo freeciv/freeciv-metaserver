@@ -311,14 +311,13 @@ if ( isset($port) ) {
         $nr1 = fcdb_num_rows($res1);
         $output .= "nplayers = \"$nr1\"\n";
         if ($nr1 > 0) {
-          $output .= "player = { \"name\", \"user\", \"nation\", \"type\", \"host\"\n";
+          $output .= "player = { \"name\", \"user\", \"nation\", \"type\"\n";
           for ($i = 0; $i < $nr1; $i++) {
             $prow = fcdb_fetch_next_row($res1, $i);
             $output .= sprintf(" \"%s\", ", stripslashes($prow["name"]));
             $output .= sprintf("\"%s\", ", stripslashes($prow["user"]));
             $output .= sprintf("\"%s\", ", stripslashes($prow["nation"]));
-            $output .= sprintf("\"%s\", ", stripslashes($prow["type"]));
-            $output .= sprintf("\"%s\"\n", stripslashes($prow["host"]));
+            $output .= sprintf("\"%s\"\n", stripslashes($prow["type"]));
           }
           $output .= "}\n";
         }
@@ -490,7 +489,7 @@ div {
         if ( $nr > 0 ) {
           print "<p><div><table style=\"width: 60%;\">\n";
           print "<tr><th class=\"left\">Leader</th><th>Nation</th>";
-          print "<th>User</th><th>Type</th><th>Host</th></tr>\n";
+          print "<th>User</th><th>Type</th></tr>\n";
           for ( $inx = 0; $inx < $nr; $inx++ ) {
             $row = fcdb_fetch_next_row($res, $inx);
             print "<tr><td class=\"left\">";
@@ -515,8 +514,6 @@ div {
             } else {
               print "$type";
             }
-            print "</td><td>";
-            print db2html($row["host"]);
             print "</td></tr>\n";
           }
           print "</table></div><p>\n";
