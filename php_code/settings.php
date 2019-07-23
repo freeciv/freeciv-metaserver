@@ -99,7 +99,7 @@ if (! file_exists($metaserver_root . "/php_code/php_code_find.php")) {
                "<tr><th>Metaserver installation problem.</th><tr>\n" .
                "<tr><td>" . $lspart . "</td></tr>" . 
                "<tr><td>" .
-               "Please contact the maintainer" . $wmpart .
+               "Please contact the maintainer" .
                ".</td></tr>\n</table></font>\n";
 }
 
