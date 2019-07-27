@@ -1,0 +1,45 @@
+#!/usr/bin/php
+
+# Adjust paths to included files below, and run this script regularly
+# (e.g. once every two minutes) from cron by user account that has access
+# to local.php.
+<?php
+
+include_once("/var/www/metaserver/php_code/local.php");
+include_once("/var/www/metaserver/php_code/fcdb.php");
+
+fcdb_metaserver_connect();
+
+$stmt="select count(*) from servers where timediff(now(), stamp) > '00:06:00';";
+$res = fcdb_exec($stmt);
+if ($res) {
+  $row = $res->fetch(PDO::FETCH_NUM);
+  $num = $row[0];
+} else {
+  error_log("select count(*) failed");
+}
+
+$stmt="select host,port from servers where timediff(now(), stamp) > '00:06:00';";
+$res = fcdb_exec($stmt);
+if ($res) {
+  $i = 0;
+
+  while ($i < $num) {
+    $row = $res->fetch(PDO::FETCH_ASSOC);
+    $host = $row["host"];
+    $port = $row["port"];
+
+    $stmt="delete from servers where host=\"$host\" and port=\"$port\";";
+    fcdb_exec($stmt);
+    $stmt="delete from players where hostport=\"$host:$port\";";
+    fcdb_exec($stmt);
+    $stmt="delete from variables where hostport=\"$host:$port\";";
+    fcdb_exec($stmt);
+
+    $i++;
+  }
+} else {
+  error_log("select from metaserver failed");
+}
+
+?>
