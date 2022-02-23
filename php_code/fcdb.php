@@ -170,11 +170,6 @@ function fcdb_mktime($time_str) {
 function addneededslashes_db($str) {
   global $fcdb_conn;
 
-  if (get_magic_quotes_gpc()) {
-    // Get rid of automatically added slashes first. We want to set them correctly!
-    $str = stripslashes($str);
-  }
-
   return $fcdb_conn->quote($str);
 }
 

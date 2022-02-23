@@ -14,12 +14,7 @@ function db2html($orig) {
 }
 
 function addneededslashes_php($orig) {
-  // Only add slashes if not automagically added
-  if (!get_magic_quotes_gpc()) {
-    return addslashes($orig);
-  }
-
-  return $orig;
+  return addslashes($orig);
 }
 
 ?>
