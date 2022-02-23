@@ -194,9 +194,11 @@ function build_fcdb_error($what_error) {
   // FIXME: There should be no mysql_error() call if we are using
   //        some other db engine.
   $error_msg = "<table border=\"1\" style=\"font-size:xx-small\">\n" .
-               "<tr><th>$what_error</th><tr>\n" .
-               "<tr><td>" . $fcdb_conn->errorInfo() . "</td></tr>" .
-               "<tr><td>" .
+               "<tr><th>$what_error</th><tr>\n";
+  if ($fcdb_conn) {
+    $error_msg = $error_msg . "<tr><td>" . $fcdb_conn->errorInfo() . "</td></tr>";
+  }
+  $error_msg = $error_msg . "<tr><td>" .
                "Please contact the maintainer" . $wmpart .
                ".</td></tr>\n</table></font>\n";
 }
