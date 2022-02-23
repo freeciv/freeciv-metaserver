@@ -45,10 +45,15 @@ function fcdb_connect($db, $un, $pw) {
       $ok = false;
       break;
     case "MySQL":
-      $fcdb_conn = new PDO("mysql:host=$dbhost;dbname=$db;charset=utf8",
-                           "$un", "$pw", 
-                           array(PDO::ATTR_EMULATE_PREPARES => false,
-                                 PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT));
+      try {
+        $fcdb_conn = new PDO("mysql:host=$dbhost;dbname=$db;charset=utf8",
+                             "$un", "$pw",
+                             array(PDO::ATTR_EMULATE_PREPARES => false,
+                                   PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT));
+      } catch (PDOException $e) {
+        echo "Connection failed: " . $e->getMessage();
+	$ok = false;
+      }
       if (!$fcdb_conn) {
         build_fcdb_error("I cannot open the database.");
 	$ok = false;
