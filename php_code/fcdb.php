@@ -27,7 +27,7 @@ function fcdb_metaserver_connect() {
   return fcdb_connect($fcdb_metaserver_db, $fcdb_username, $fcdb_pw);
 }
 
-$dbhost = '';
+$dbhost = 'localhost';
 
 function fcdb_connect($db, $un, $pw) {
   global $fcdb_sel, $fcdb_conn;
