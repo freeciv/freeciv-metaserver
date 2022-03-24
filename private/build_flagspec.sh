@@ -7,7 +7,7 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 
-if test "x$1" = "x" || test "x$1" = "x-h" || test "x$1" = "x--help" ; then
+if test "$1" = "" || test "$1" = "-h" || test "$1" = "--help" ; then
   echo "Usage: $0 <flags spec file>"
   exit
 fi
