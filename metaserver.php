@@ -576,7 +576,7 @@ div {
           print "</td><td style=\"width: 30%\">";
           print db2html($row["message"]);
           print "</td><td>";
-          $time_sec = $row["unix_timestamp()-unix_timestamp(stamp)"];
+          $time_sec = intval($row["unix_timestamp()-unix_timestamp(stamp)"]);
           $last_update = sprintf("%ss", $time_sec);
           if ($time_sec >= 60) {
             $last_update = sprintf("%sm", floor($time_sec/60));
