@@ -154,23 +154,23 @@ if ( isset($port) ) {
 
       if (isset($plu[$i]) ) {
         $plu[$i] = addneededslashes_db($plu[$i]);
-        $ins .= "user=\"$plu[$i]\", ";
+        $ins .= "user=$plu[$i], ";
       }
       if (isset($pll[$i]) ) {
         $pll[$i] = addneededslashes_db($pll[$i]);
-        $ins .= "name=\"$pll[$i]\", ";
+        $ins .= "name=$pll[$i], ";
       }
       if (isset($pln[$i]) ) {
         $pln[$i] = addneededslashes_db($pln[$i]);
-        $ins .= "nation=\"$pln[$i]\", ";
+        $ins .= "nation=$pln[$i], ";
       }
       if (isset($plf[$i]) ) {
         $plf[$i] = addneededslashes_db($plf[$i]);
-        $ins .= "flag=\"$plf[$i]\", ";
+        $ins .= "flag=$plf[$i], ";
       }
       if (isset($plt[$i]) ) {
         $plt[$i] = addneededslashes_db($plt[$i]);
-        $ins .= "type=\"$plt[$i]\", ";
+        $ins .= "type=$plt[$i], ";
       }
       $ins .= "host=\"$plh[$i]\"";
       /* an array of all the sql statements; save actual db access to the end */
@@ -190,8 +190,8 @@ if ( isset($port) ) {
       $vn[$i] = addneededslashes_db($vn[$i]);
       $vv[$i] = addneededslashes_db($vv[$i]);
       $ins = "insert into variables set hostport=\"$host:$port\", ";
-      $ins .= "name=\"$vn[$i]\", ";
-      $ins .= "value=\"$vv[$i]\"";
+      $ins .= "name=$vn[$i], ";
+      $ins .= "value=$vv[$i]";
       /* an array of all the sql statements; save actual db access to the end */
       array_push($variablestmt, $ins);
     }
