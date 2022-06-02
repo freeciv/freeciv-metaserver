@@ -83,7 +83,7 @@ $sqlvars = array(
   "serverid"
 );
 
-/* this little block of code "changes" the namespace of the variables 
+/* this little block of code "changes" the namespace of the variables
  * we got from the $_REQUEST variable to a local scope */
 $assoc_array = array();
 foreach($posts as $val) {
@@ -247,7 +247,7 @@ if ( isset($port) ) {
 
   /* if we have a playerstmt array we want to zero out the players
    * and if the server wants to explicitly tell us to drop them all */
-  if (count($playerstmt) > 0 || isset($dropplrs)) { 
+  if (count($playerstmt) > 0 || isset($dropplrs)) {
     $delstmt = "delete from players where hostport=\"$host:$port\"";
 
     print "$delstmt\n";
@@ -639,11 +639,11 @@ Latest stable release is <?php echo version_by_tag("stable"); ?>.
 </div>
 </body>
 </html>
-<?php 
-} 
+<?php
+}
 
 /* This returns a list of the capabilities that are mandatory in a given capstring
- * i.e. those that begin with a + 
+ * i.e. those that begin with a +
  */
 function mandatory_capabilities($capstr) {
   $return=array();
@@ -665,7 +665,7 @@ function has_capability($cap,$capstr) {
     // debug("  comparing \"$cap\" to \"$element\"\n");
     if ( $cap == $element) {
       return(TRUE);
-    } 
+    }
   }
   return(FALSE);
 }
@@ -689,5 +689,5 @@ function debug($output) {
     fclose($stderr);
   }
 }
-      
+
 ?>

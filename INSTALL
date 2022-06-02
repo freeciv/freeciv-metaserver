@@ -51,8 +51,8 @@ $pic_paths
   Array of image search directories. Maps between filesystem layout and
   webserver layout.
 
-  Default value searches from pics subdirectories under metaserver directory and webserver 
-  root directory:
+  Default value searches from pics subdirectories under metaserver directory
+  and webserver root directory:
     $metaserver_root . "pics/" => $metaserver_url_path . "pics/",
     $_SERVER[DOCUMENT_ROOT]/pics/ => "pics/"
 
