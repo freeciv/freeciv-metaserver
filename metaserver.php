@@ -34,7 +34,11 @@ if (! $config_problem) {
   fcdb_metaserver_connect();
 }
 
-$fullself="http://".$_SERVER["SERVER_NAME"].$_SERVER["PHP_SELF"];
+if ($_SERVER["HTTPS"] != "") {
+  $fullself="https://".$_SERVER["SERVER_NAME"].$_SERVER["PHP_SELF"];
+} else {
+  $fullself="http://".$_SERVER["SERVER_NAME"].$_SERVER["PHP_SELF"];
+}
 
 $posts = array(
   "host",
