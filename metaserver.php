@@ -381,10 +381,10 @@ if ( isset($port) ) {
       print "      Host: ".$row["host"]."<br /> ";
       print "      Port: ".$row["port"]."<br /> ";
       print "      Version: ".$row["version"]."<br /> ";
-      print "      Patches: ".stripslashes($row["patches"])."<br /> ";
+      print "      Patches: ".stripslashes(htmlspecialchars($row["patches"]))."<br /> ";
       print "      State: ".$row["state"]."<br /> ";
-      print "      Ruleset: ".stripslashes($row["ruleset"])."<br />";
-      print "      Message: ".stripslashes($row["message"])."<br /> ";
+      print "      Ruleset: ".stripslashes(htmlspecialchars($row["ruleset"]))."<br />";
+      print "      Message: ".stripslashes(htmlspecialchars($row["message"]))."<br /> ";
       print "      Players: ".$players."<br /> ";
       print "      Available: ".$row["available"]."<br /> ";
       if ($row["humans"] != "-1") {
